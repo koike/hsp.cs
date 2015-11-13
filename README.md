@@ -51,7 +51,7 @@ Example:
 - exist
 - delete
 - mkdir
-- split"
+- split
 
 ## Example
 ```
