@@ -5,6 +5,8 @@ HSPのコードをC#に変換し, 実行します
 [The MIT License](https://github.com/kkrnt/hsp.cs/blob/master/LICENSE)
 
 ## Download
+
+[v0.1.1](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.1)  
 [v0.1.0](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.0)  
 
 ## Usage
@@ -18,8 +20,17 @@ Example:
      hsp.cs.exe sample.hsp -o sample.exe -c sample.cs
 ```
 
-## BasicGrammar
+## Basic Grammar
 - if
+- else
+- for
+- next
+- while
+- wend
+- repeat
+- loop
+- _break
+- _continue
 
 ## Function
 - int
@@ -65,10 +76,22 @@ print hoge
 c = 0
 if c==0 : print "c=0" : print "ok"
 d = 1
-if d==1 {
-        print "d=0"
-        print "ok"
+if d == 0 {
+        print "no"
+}else{
+        print "yes"
 }
+for i,0,3,1
+        print i
+next
+e = 3
+while e>0
+        print e
+        e--
+wend
+repeat 5
+        print cnt
+loop
 
 ========================
 
@@ -78,6 +101,7 @@ public class Program
 {
 public static void Main()
 {
+int cnt = 0;
 dynamic a = "123";
 dynamic b = "456";
 dynamic hoge =  ( int.Parse ( a + double.Parse ( b ) ) ).ToString();
@@ -89,10 +113,25 @@ Console.WriteLine("c=0");
 Console.WriteLine("ok");
 };
 dynamic d = 1;
-if (d == 1)
+if (d == 0)
 {
-Console.WriteLine("d=0");
-Console.WriteLine("ok");
+Console.WriteLine("no");
+}else{
+Console.WriteLine("yes");
+}
+for (var i = 0; i != 3; i += 1 )
+{
+Console.WriteLine(i);
+}
+dynamic e = 3;
+while (e>0)
+{
+Console.WriteLine(e);
+e --;
+}
+for (cnt=0; cnt<5; cnt++)
+{
+Console.WriteLine(cnt);
 }
 }
 }
@@ -110,8 +149,18 @@ Console.WriteLine("ok");
 123456
 c=0
 ok
-d=0
-ok
+yes
+0
+1
+2
+3
+2
+1
+0
+1
+2
+3
+4
 
 ========================
 ```

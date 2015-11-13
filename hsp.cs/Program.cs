@@ -23,7 +23,13 @@ namespace hsp.cs
             "if",
             "else",
             "while",
-            "for"
+            "wend",
+            "for",
+            "next",
+            "_break",
+            "_continue",
+            "repeat",
+            "loop"
         };
 
         //文字列を格納するリスト
@@ -71,7 +77,8 @@ namespace hsp.cs
         public static List<string> VariableList = new List<string>()
         {
             "strsize",
-            "stat"
+            "stat",
+            "cnt"
         };
 
         //using
@@ -82,11 +89,17 @@ namespace hsp.cs
         public static string SubFunction = "";
         //Main関数の定義
         private const string MainFunction = "public static void Main()\n{\n";
+        //システム変数宣言
+        public static string VariableDefinition = "";
         //footer
         private const string Footer = "\n}\n}";
 
         //if文の末尾に"}"を付けるためのフラグ
         private static List<int> ifFlag = new List<int>();
+
+        //変数名の先頭として存在してはいけない文字
+        private static List<char> VariableNameRule =
+            "0123456789!\"#$%&'()-^\\=~|@[`{;:]+*},./<>?".ToCharArray().ToList();
 
         /// <summary>
         /// ローカル変数名を作成する関数
@@ -202,6 +215,8 @@ namespace hsp.cs
                     .Replace("-  =", "-=")
                     .Replace("*  =", "*=")
                     .Replace("/  =", "/=")
+                    .Replace("+  +", "++")
+                    .Replace("-  -", "--")
                     .Trim();
 
                 //関数処理
@@ -334,7 +349,9 @@ namespace hsp.cs
 
                 //１番最初のsentenceを抜き出す
                 var spaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.OrdinalIgnoreCase);
-                var firstSentence = hspArrayData[i].Substring(0, spaceIndex).Trim();
+                var firstSentence = spaceIndex < 0
+                    ? hspArrayData[i].Trim()
+                    : hspArrayData[i].Substring(0, spaceIndex).Trim();
 
                 //基本文法の処理
                 if (BasicList.Contains(firstSentence))
@@ -390,6 +407,73 @@ namespace hsp.cs
                                                   hspArrayData[i].Substring(bracketIndex);
                             }
                             break;
+
+                        //elseの処理
+                        case "else":
+                            hspArrayData[i] = "}\n else \n{";
+                            break;
+                        
+                        //forの処理
+                        case "for":
+                            var forConditionalSentence =
+                                hspArrayData[i].Substring(spaceIndex).Split(',').Select(_ => _.Trim()).ToList();
+                            if (forConditionalSentence.Count() != 4)
+                            {
+                                //要素数がオカシイのでエラー
+                                Console.WriteLine("for文の要素数がオカシイです");
+                                Console.WriteLine("現在の要素数 = " + forConditionalSentence.Count());
+                            }
+                            else
+                            {
+                                hspArrayData[i] = "for (var " + forConditionalSentence[0] + " = " + forConditionalSentence[1] +
+                                                  "; " + forConditionalSentence[0] + " != " + forConditionalSentence[2] + "; " +
+                                                  forConditionalSentence[0] + " += " + forConditionalSentence[3] + " )\n{";
+                            }
+                            break;
+                        
+                        //breakの処理
+                        case "_break":
+                            hspArrayData[i] = "break";
+                            break;
+                        
+                        //continueの処理
+                        case "_continue":
+                            hspArrayData[i] = "continue";
+                            break;
+
+                        //whileの処理
+                        case "while":
+                            var whileConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
+                            hspArrayData[i] = "while (" + whileConditionalSentence + ")\n{";
+                            break;
+
+                        //repeatの処理
+                        case "repeat":
+                            var repeatConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
+                            int counter;
+                            if (int.TryParse(repeatConditionalSentence, out counter))
+                            {
+                                hspArrayData[i] = "for (cnt=0; cnt<" + counter + "; cnt++)\n{";
+
+                                //システム変数cntが定義されていない場合は定義
+                                if (!VariableDefinition.Contains("int cnt = 0;"))
+                                {
+                                    VariableDefinition += "int cnt = 0;\n";
+                                }
+                            }
+                            else
+                            {
+                                //repeatに渡されている値が数字ではないのでエラー
+                                Console.WriteLine("repeatに渡されている値("+ repeatConditionalSentence + ")は数字ではありません");
+                            }
+                            break;
+
+                        //色々な後処理
+                        case "next":
+                        case "wend":
+                        case "loop":
+                            hspArrayData[i] = "}";
+                            break;
                     }
                 }
 
@@ -434,13 +518,21 @@ namespace hsp.cs
                 //基本文法でもコマンドでもないものは変数
                 else if (!BasicList.Contains(firstSentence) && !FunctionList.Contains(firstSentence))
                 {
-                    //変数リストに含まれていない場合
-                    if (!VariableList.Contains(firstSentence))
+                    //変数名として正しいか
+                    if (VariableNameRule.Contains(firstSentence[0]))
                     {
-                        //変数宣言
-                        hspArrayData[i] = "dynamic " + hspArrayData[i];
-                        //変数リストに追加
-                        VariableList.Add(firstSentence);
+                        //変数名ではない
+                    }
+                    else
+                    {
+                        //変数リストに含まれていない場合
+                        if (!VariableList.Contains(firstSentence))
+                        {
+                            //変数宣言
+                            hspArrayData[i] = "dynamic " + hspArrayData[i];
+                            //変数リストに追加
+                            VariableList.Add(firstSentence);
+                        }
                     }
                 }
             }
@@ -484,7 +576,8 @@ namespace hsp.cs
             }
 
             //C#のコードを完成
-            var code = Using + Header + SubFunction + MainFunction + string.Join("\n", hspArrayData) + Footer;
+            var code = Using + Header + SubFunction + MainFunction + VariableDefinition +
+                       string.Join("\n", hspArrayData) + Footer;
 
             //エラー判定
             var error = true;

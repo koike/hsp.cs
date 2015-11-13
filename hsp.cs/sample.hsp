@@ -5,7 +5,19 @@ print hoge
 c = 0
 if c==0 : print "c=0" : print "ok"
 d = 1
-if d==1 {
-	print "d=0"
-	print "ok"
+if d == 0 {
+	print "no"
+}else{
+	print "yes"
 }
+for i,0,3,1
+	print i
+next
+e = 3
+while e>0
+	print e
+	e--
+wend
+repeat 5
+	print cnt
+loop
