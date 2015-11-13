@@ -1,0 +1,11 @@
+a="123"
+b="456"
+hoge=str (int (a+double (b)))
+print hoge
+c = 0
+if c==0 : print "c=0" : print "ok"
+d = 1
+if d==1 {
+	print "d=0"
+	print "ok"
+}
