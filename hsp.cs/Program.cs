@@ -29,7 +29,12 @@ namespace hsp.cs
             "_break",
             "_continue",
             "repeat",
-            "loop"
+            "loop",
+            "switch",
+            "swend",
+            "swbreak",
+            "case",
+            "default"
         };
 
         //文字列を格納するリスト
@@ -96,6 +101,16 @@ namespace hsp.cs
 
         //if文の末尾に"}"を付けるためのフラグ
         private static List<int> ifFlag = new List<int>();
+
+        //コメントをエスケープするためのフラグ
+        private static bool commentFlag = false;
+
+        //switch文の中にいるかどうか
+        private static bool switchFlag = false;
+        //switch文の行数を入れるためのリスト
+        private static List<int> switchList = new List<int>(); 
+        //1つ目のcase文
+        private static bool firstCase = true;
 
         //変数名の先頭として存在してはいけない文字
         private static List<char> VariableNameRule =
@@ -196,6 +211,34 @@ namespace hsp.cs
                 }
                 hspArrayData[i] = hspStringData;
 
+                //コメントを取り除く
+                //スラッシュ2つによるコメントアウトを取り除く
+                var commentIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
+                if (commentIndex > -1)
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentIndex).Trim();
+                }
+                //スラッシュとアスタリスクによるコメントアウトをエスケープする
+                commentIndex = hspArrayData[i].IndexOf("/*", StringComparison.Ordinal);
+                if (commentIndex > -1)
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentIndex).Trim();
+                    commentFlag = true;
+                }
+                if (commentFlag)
+                {
+                    commentIndex = hspArrayData[i].IndexOf("*/", StringComparison.Ordinal);
+                    if (commentIndex > -1)
+                    {
+                        hspArrayData[i] = hspArrayData[i].Substring(commentIndex + "*/".Length).Trim();
+                        commentFlag = false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
                 hspArrayData[i] = hspArrayData[i]
                     //データ中の空白文字を全て半角スペースに変換
                     .Replace('　', ' ')
@@ -217,6 +260,7 @@ namespace hsp.cs
                     .Replace("/  =", "/=")
                     .Replace("+  +", "++")
                     .Replace("-  -", "--")
+                    .Replace("\\  =", "\\=")
                     .Trim();
 
                 //関数処理
@@ -468,6 +512,90 @@ namespace hsp.cs
                             }
                             break;
 
+                        //switchの処理
+                        case "switch":
+                            var switchSpaceIndex = hspArrayData[i].IndexOf(" ");
+                            if (switchSpaceIndex < 0)
+                            {
+                                //switchの条件文としてオカシイのでエラー
+                                Console.WriteLine("switch文の条件文が書かれていません");
+                            }
+                            else
+                            {
+                                var switchConditionalSentence = hspArrayData[i].Substring(switchSpaceIndex).Trim();
+                                var switchTmpString = __LocalVariableName("switchTmpString");
+                                hspArrayData[i] = "string " + switchTmpString + " = " + switchConditionalSentence +
+                                                  ".ToString();\n" + "switch (" + switchTmpString + ") \n{";
+                            }
+                            switchFlag = true;
+                            break;
+                        case "swend":
+                            //1つ目の要素はswitch文なので取り除く
+                            switchList.RemoveAt(0);
+
+                            for (var j = 0; j < switchList.Count; j++)
+                            {
+                                if (hspArrayData[switchList[j]].Equals("default:"))
+                                {
+                                    if (!hspArrayData[switchList[j] - 1].Contains("break;"))
+                                    {
+                                        var defaultString = "";
+                                        for (var k = switchList[j]+1; k < switchList[switchList.Count - 1]; k++)
+                                        {
+                                            defaultString += hspArrayData[k] + "\nbreak;";
+                                        }
+                                        hspArrayData[switchList[j] - 1] += defaultString;
+                                    }
+                                }
+
+                                var endIndex = hspArrayData[switchList[j]].IndexOf(" ", StringComparison.Ordinal);
+                                if (endIndex < 0)
+                                {
+                                    //
+                                }
+                                else
+                                {
+                                    var caseName = hspArrayData[switchList[j]].Substring(endIndex).Trim();
+                                    var first = hspArrayData[switchList[j]].Substring(0, endIndex).Trim();
+                                    if (firstCase)
+                                    {
+                                        firstCase = false;
+                                    }
+                                    else if (first.Equals("case"))
+                                    {
+                                        if (!hspArrayData[switchList[j] - 1].Contains("break;"))
+                                        {
+                                            hspArrayData[switchList[j] - 1] += "\ngoto case " +
+                                                                               caseName.Substring(0, caseName.Length - 1) +
+                                                                               ";";
+                                        }
+                                    }
+                                }
+                            }
+
+                            switchFlag = false;
+                            hspArrayData[i] = "}";
+                            break;
+                        case "swbreak":
+                            hspArrayData[i] = "break;";
+                            break;
+                        case "case":
+                            var caseSpaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.Ordinal);
+                            if (caseSpaceIndex < 0)
+                            {
+                                //case文の値が不正なのでエラー
+                                Console.WriteLine("case文の値が不正です");
+                            }
+                            else
+                            {
+                                hspArrayData[i] = "case \"" + hspArrayData[i].Substring(caseSpaceIndex).Trim() + "\"";
+                            }
+                            hspArrayData[i] += ":";
+                            break;
+                        case "default":
+                            hspArrayData[i] += ":";
+                            break;
+
                         //色々な後処理
                         case "next":
                         case "wend":
@@ -535,6 +663,14 @@ namespace hsp.cs
                         }
                     }
                 }
+
+                //HSPではmodを￥で表記するので%に置換
+                hspArrayData[i] = hspArrayData[i].Replace("\\", "%");
+
+                if (switchFlag)
+                {
+                    switchList.Add(i);
+                }
             }
 
             //文字列のエスケープを元に戻す
@@ -566,7 +702,8 @@ namespace hsp.cs
             //各行の末尾にセミコロンを追加
             for (var i = 0; i < hspArrayData.Count; i++)
             {
-                if (hspArrayData[i].Equals("") || hspArrayData[i].Equals("{") || hspArrayData[i].Equals("}")) continue;
+                if (hspArrayData[i].Equals("") || hspArrayData[i].Equals("{") || hspArrayData[i].Equals("}") ||
+                    hspArrayData[i][hspArrayData[i].Length - 1].Equals(':')) continue;
 
                 if (hspArrayData[i][hspArrayData[i].Length - 1] != '{' &&
                     hspArrayData[i][hspArrayData[i].Length - 1] != ';')

@@ -5,7 +5,7 @@ HSPのコードをC#に変換し, 実行します
 [The MIT License](https://github.com/kkrnt/hsp.cs/blob/master/LICENSE)
 
 ## Download
-
+[v0.1.2](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.2)
 [v0.1.1](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.1)  
 [v0.1.0](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.0)  
 
@@ -29,6 +29,11 @@ Example:
 - wend
 - repeat
 - loop
+- switch
+- swend
+- swbreak
+- case
+- default
 - _break
 - _continue
 
@@ -65,6 +70,8 @@ Example:
 - split
 
 ## Example
+<img src="http://o8o.jp/hsp.cs.png" width="40%">  
+
 ```
 hsp.cs.exe sample.hsp
 
@@ -92,6 +99,19 @@ wend
 repeat 5
         print cnt
 loop
+f = 1
+switch f
+case 0
+        print "f=0"
+        swbreak
+case 1
+        print "f=1"
+case 2
+        print "f=2"
+default
+        print "f!=0"
+        swbreak
+swend
 
 ========================
 
@@ -133,6 +153,23 @@ for (cnt=0; cnt<5; cnt++)
 {
 Console.WriteLine(cnt);
 }
+dynamic f = 1;
+string switchTmpString_5a156ec5380d4edc85b5ccdd7646d24d = f.ToString();
+switch (switchTmpString_5a156ec5380d4edc85b5ccdd7646d24d)
+{
+case "0":
+Console.WriteLine("f=0");
+break;
+case "1":
+Console.WriteLine("f=1");
+goto case "2";
+case "2":
+Console.WriteLine("f=2");Console.WriteLine("f!=0");
+break;
+default:
+Console.WriteLine("f!=0");
+break;
+}
 }
 }
 ========================
@@ -161,8 +198,9 @@ yes
 2
 3
 4
+f=1
+f=2
+f!=0
 
 ========================
 ```
-
-<img src="http://o8o.jp/hsp.cs.png" width="40%">

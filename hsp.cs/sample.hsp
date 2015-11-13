@@ -21,3 +21,16 @@ wend
 repeat 5
 	print cnt
 loop
+f = 1
+switch f
+case 0
+	print "f=0"
+	swbreak
+case 1
+	print "f=1"
+case 2
+	print "f=2"
+default
+	print "f!=0"
+	swbreak
+swend
