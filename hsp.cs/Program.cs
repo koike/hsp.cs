@@ -87,7 +87,32 @@ namespace hsp.cs
                 hspArrayData[i] = Analyzer.StringEscape(hspArrayData[i]);
 
                 //コメントを取り除く
-                hspArrayData[i] = Analyzer.CommentEscape(hspArrayData[i]);
+                //スラッシュ2つによるコメントアウトを取り除く
+                var commentIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
+                if (commentIndex > -1)
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentIndex).Trim();
+                }
+                //スラッシュとアスタリスクによるコメントアウトをエスケープする
+                commentIndex = hspArrayData[i].IndexOf("/*", StringComparison.Ordinal);
+                if (commentIndex > -1)
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentIndex).Trim();
+                    commentFlag = true;
+                }
+                if (commentFlag)
+                {
+                    commentIndex = hspArrayData[i].IndexOf("*/", StringComparison.Ordinal);
+                    if (commentIndex > -1)
+                    {
+                        hspArrayData[i] = hspArrayData[i].Substring(commentIndex + "*/".Length).Trim();
+                        commentFlag = false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
 
                 hspArrayData[i] = hspArrayData[i]
                     //データ中の空白文字を全て半角スペースに変換
