@@ -156,6 +156,12 @@ namespace hsp.cs
                     case "atan":
                         HSP.Atan(sentence, j);
                         break;
+                    case "deg2rad":
+                        HSP.Deg2rad(sentence, j);
+                        break;
+                    case "rad2deg":
+                        HSP.Rad2deg(sentence, j);
+                        break;
                     case "expf":
                         HSP.Expf(sentence, j);
                         break;
@@ -174,6 +180,12 @@ namespace hsp.cs
                     case "strlen":
                         HSP.Strlen(sentence, j, k);
                         break;
+                    case "strmid":
+                        HSP.Strmid(sentence, j, k);
+                        break;
+                    case "strtrim":
+                        HSP.Strtrim(sentence, j, k);
+                        break;
                     case "limit":
                         HSP.Limit(sentence, j, k);
                         break;
@@ -181,16 +193,16 @@ namespace hsp.cs
                         HSP.Limitf(sentence, j, k);
                         break;
                     case "length":
-                        HSP.Length(sentence, j, 0);
+                        HSP.Length(sentence, j, k, 1);
                         break;
                     case "length2":
-                        HSP.Length(sentence, j, 1);
+                        HSP.Length(sentence, j, k, 2);
                         break;
                     case "length3":
-                        HSP.Length(sentence, j, 2);
+                        HSP.Length(sentence, j, k, 3);
                         break;
                     case "length4":
-                        HSP.Length(sentence, j, 3);
+                        HSP.Length(sentence, j, k, 4);
                         break;
                     case "gettime":
                         HSP.Gettime(sentence, j);

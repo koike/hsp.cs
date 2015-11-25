@@ -138,15 +138,15 @@ namespace hsp.cs
                     .Replace("\\  =", "\\=")
                     .Trim();
 
-                //関数処理
-                //要素単位で分解するために半角スペースでスプリット
-                hspArrayData[i] = Analyzer.Function(hspArrayData[i]);
-
                 //１番最初のsentenceを抜き出す
                 var spaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.OrdinalIgnoreCase);
                 var firstSentence = spaceIndex < 0
                     ? hspArrayData[i].Trim()
                     : hspArrayData[i].Substring(0, spaceIndex).Trim();
+
+                //関数処理
+                //要素単位で分解するために半角スペースでスプリット
+                hspArrayData[i] = Analyzer.Function(hspArrayData[i]);
 
                 //基本文法の処理
                 if (BasicList.Contains(firstSentence))
@@ -376,11 +376,23 @@ namespace hsp.cs
                         case "delete":
                             hspArrayData[i] = HSP.Delete(commandArguments);
                             break;
+                        case "bcopy":
+                            hspArrayData[i] = HSP.Bcopy(commandArguments);
+                            break;
                         case "mkdir":
                             hspArrayData[i] = HSP.Mkdir(commandArguments);
                             break;
                         case "split":
                             hspArrayData[i] = HSP.Split(commandArguments);
+                            break;
+                        case "strrep":
+                            hspArrayData[i] = HSP.Strrep(commandArguments);
+                            break;
+                        case "dim":
+                            hspArrayData[i] = HSP.Dim(commandArguments);
+                            break;
+                        case "ddim":
+                            hspArrayData[i] = HSP.Ddim(commandArguments);
                             break;
                     }
 

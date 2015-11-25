@@ -46,12 +46,16 @@ namespace hsp.cs
             "cos",
             "tan",
             "atan",
+            "deg2rad",
+            "rad2deg",
             "expf",
             "logf",
             "powf",
             "sqrt",
             "instr",
             "strlen",
+            "strmid",
+            "strtrim",
             "limit",
             "limitf",
             "length",
@@ -68,8 +72,12 @@ namespace hsp.cs
             "mes",
             "exist",
             "delete",
+            "bcopy",
             "mkdir",
-            "split"
+            "split",
+            "strrep",
+            "dim",
+            "ddim"
         };
 
         //変数リスト
