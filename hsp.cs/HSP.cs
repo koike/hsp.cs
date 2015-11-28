@@ -123,6 +123,12 @@ namespace hsp.cs
             return "Directory.CreateDirectory(" + dirname + ");";
         }
 
+
+        public static string Chdir(string dirname)
+        {
+            return "Environment.CurrentDirectory = " + dirname + ";";
+        }
+
         /// <summary>
         /// 文字列から分割された要素を代入
         /// </summary>
@@ -751,6 +757,15 @@ namespace hsp.cs
         public static void Xor(List<string> sentence, int i)
         {
             sentence[i] = "^";
+        }
+
+        public static void Dir_cur(List<string> sentence, int i)
+        {
+            if (!Program.Using.Contains("using System.IO;"))
+            {
+                Program.Using += "using System.IO;\n";
+            }
+            sentence[i] = "Directory.GetCurrentDirectory()";
         }
     }
 }

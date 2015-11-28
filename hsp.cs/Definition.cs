@@ -74,6 +74,7 @@ namespace hsp.cs
             "delete",
             "bcopy",
             "mkdir",
+            "chdir",
             "split",
             "strrep",
             "dim",
@@ -98,7 +99,8 @@ namespace hsp.cs
             "and",
             "not",
             "or",
-            "xor"
+            "xor",
+            "dir_cur"
         };
 
         //using

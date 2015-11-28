@@ -25,7 +25,7 @@ namespace hsp.cs
                 if (preIndex == -1 || hspArrayString[preIndex - 1] == '\\') break;
                 var x = hspArrayString.Substring(preIndex + 1);
                 var postIndex = x.IndexOf("\"", StringComparison.OrdinalIgnoreCase);
-                if (postIndex == -1 || hspArrayString[postIndex - 1] == '\\') break;
+                if (postIndex == -1 || hspArrayString[preIndex + postIndex] == '\\') break;
                 var midString = hspArrayString.Substring(preIndex, postIndex + 2);
                 Program.StringList.Add(midString);
                 hspArrayString = hspArrayString.Replace(midString, "");
@@ -244,6 +244,9 @@ namespace hsp.cs
                             break;
                         case "xor":
                             HSP.Xor(sentence, i);
+                            break;
+                        case "dir_cur":
+                            HSP.Dir_cur(sentence, i);
                             break;
                     }
                 }

@@ -397,6 +397,9 @@ namespace hsp.cs
                         case "mkdir":
                             hspArrayData[i] = HSP.Mkdir(commandArguments);
                             break;
+                        case "chdir":
+                            hspArrayData[i] = HSP.Chdir(commandArguments);
+                            break;
                         case "split":
                             hspArrayData[i] = HSP.Split(commandArguments);
                             break;
