@@ -88,6 +88,19 @@ namespace hsp.cs
             "cnt"
         };
 
+        //配列変数リスト
+        public static List<string> ArrayVariableList = new List<string>();
+
+        //マクロリスト
+        public static List<string> MacroList = new List<string>()
+        {
+            "M_PI",
+            "and",
+            "not",
+            "or",
+            "xor"
+        };
+
         //using
         public static string Using = "using System;\n";
         //class

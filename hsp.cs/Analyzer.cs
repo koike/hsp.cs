@@ -74,6 +74,7 @@ namespace hsp.cs
         /// <returns></returns>
         public static string Function(string hspArrayString)
         {
+            //要素単位で分解するために半角スペースでスプリット
             var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
             for (var j = 0; j < sentence.Count; j++)
             {
@@ -209,6 +210,45 @@ namespace hsp.cs
                         break;
                 }
             }
+            //結果を反映
+            return string.Join(" ", sentence);
+        }
+
+        public static string Macro(string hspArrayString)
+        {
+            //要素単位で分解するために半角スペースでスプリット
+            var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
+            for (var i = 0; i < sentence.Count; i++)
+            {
+                //余計なものは省く
+                sentence[i] = sentence[i].Trim();
+                if (sentence[i] == null ||
+                    sentence[i].Equals("\n") ||
+                    sentence[i].Equals(""))
+                    continue;
+                if (Program.MacroList.Contains(sentence[i]))
+                {
+                    switch (sentence[i])
+                    {
+                        case "M_PI":
+                            HSP.M_pi(sentence, i);
+                            break;
+                        case "and":
+                            HSP.And(sentence, i);
+                            break;
+                        case "not":
+                            HSP.Not(sentence, i);
+                            break;
+                        case "or":
+                            HSP.Or(sentence, i);
+                            break;
+                        case "xor":
+                            HSP.Xor(sentence, i);
+                            break;
+                    }
+                }
+            }
+
             //結果を反映
             return string.Join(" ", sentence);
         }

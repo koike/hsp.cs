@@ -717,5 +717,40 @@ namespace hsp.cs
                     break;
             }
         }
+
+
+        /*========================================
+　　　　        　　　　マクロの定義
+        ========================================*/
+
+        
+        public static void M_pi(List<string> sentence, int i)
+        {
+            sentence[i] = "Math.PI";
+        }
+
+        
+        public static void And(List<string> sentence, int i)
+        {
+            sentence[i] = "&&";
+        }
+
+        
+        public static void Not(List<string> sentence, int i)
+        {
+            sentence[i] = "!";
+        }
+
+        
+        public static void Or(List<string> sentence, int i)
+        {
+            sentence[i] = "||";
+        }
+
+        
+        public static void Xor(List<string> sentence, int i)
+        {
+            sentence[i] = "^";
+        }
     }
 }

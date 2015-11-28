@@ -144,8 +144,10 @@ namespace hsp.cs
                     ? hspArrayData[i].Trim()
                     : hspArrayData[i].Substring(0, spaceIndex).Trim();
 
+                //マクロ処理
+                hspArrayData[i] = Analyzer.Macro(hspArrayData[i]);
+
                 //関数処理
-                //要素単位で分解するために半角スペースでスプリット
                 hspArrayData[i] = Analyzer.Function(hspArrayData[i]);
 
                 //基本文法の処理
