@@ -62,7 +62,8 @@ namespace hsp.cs
             "length2",
             "length3",
             "length4",
-            "gettime"
+            "gettime",
+            "rnd"
         };
 
         //コマンドリスト
@@ -100,7 +101,9 @@ namespace hsp.cs
             "not",
             "or",
             "xor",
-            "dir_cur"
+            "dir_cur",
+            "ginfo_mx",
+            "ginfo_my"
         };
 
         //using

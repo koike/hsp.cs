@@ -198,10 +198,10 @@ namespace hsp.cs
 
             var str = "";
             //変数リストに含まれていない場合
-            if (!Program.VariableList.Contains(p[0]))
+            if (!Program.ArrayVariableList.Contains(p[0]))
             {
                 //変数リストに追加
-                Program.VariableList.Add(p[0]);
+                Program.ArrayVariableList.Add(p[0]);
                 str = "dynamic ";
             }
 
@@ -238,10 +238,10 @@ namespace hsp.cs
 
             var str = "";
             //変数リストに含まれていない場合
-            if (!Program.VariableList.Contains(p[0]))
+            if (!Program.ArrayVariableList.Contains(p[0]))
             {
                 //変数リストに追加
-                Program.VariableList.Add(p[0]);
+                Program.ArrayVariableList.Add(p[0]);
                 str = "dynamic ";
             }
 
@@ -724,12 +724,22 @@ namespace hsp.cs
             }
         }
 
+        public static void Rnd(List<string> sentence, int j, int k)
+        {
+            sentence[j] = "Random random = new Random();\n" + "random.Next(" + sentence[j + 2] + ");";
+
+            for (var i = j + 1; i <= k; i++)
+            {
+                sentence[i] = string.Empty;
+            }
+        }
+
 
         /*========================================
 　　　　        　　　　マクロの定義
         ========================================*/
 
-        
+
         public static void M_pi(List<string> sentence, int i)
         {
             sentence[i] = "Math.PI";
@@ -766,6 +776,16 @@ namespace hsp.cs
                 Program.Using += "using System.IO;\n";
             }
             sentence[i] = "Directory.GetCurrentDirectory()";
+        }
+
+        public static void Ginfo_mx(List<string> sentence, int i)
+        {
+            sentence[i] = "Windows.Forms.Cursor.Position.X";
+        }
+
+        public static void Ginfo_my(List<string> sentence, int i)
+        {
+            sentence[i] = "Windows.Forms.Cursor.Position.Y";
         }
     }
 }

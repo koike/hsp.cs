@@ -208,6 +208,9 @@ namespace hsp.cs
                     case "gettime":
                         HSP.Gettime(sentence, j);
                         break;
+                    case "rnd":
+                        HSP.Rnd(sentence, j, k);
+                        break;
                 }
             }
             //結果を反映
@@ -247,6 +250,12 @@ namespace hsp.cs
                             break;
                         case "dir_cur":
                             HSP.Dir_cur(sentence, i);
+                            break;
+                        case "ginfo_mx":
+                            HSP.Ginfo_mx(sentence, i);
+                            break;
+                        case "ginfo_my":
+                            HSP.Ginfo_my(sentence, i);
                             break;
                     }
                 }
