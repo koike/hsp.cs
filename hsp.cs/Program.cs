@@ -203,6 +203,19 @@ namespace hsp.cs
                                                       bracketIndex - "if ".Length - 1) + ")\n" +
                                                   hspArrayData[i].Substring(bracketIndex);
                             }
+
+                            //if文の条件における"="の好意的解釈
+                            //"="が1つでも"=="として扱う
+                            hspArrayData[i] = hspArrayData[i]
+                                .Replace(" ", "")
+                                .Replace("=", "==")
+                                .Replace("====", " == ")
+                                .Replace("!==", " != ")
+                                .Replace("+==", " += ")
+                                .Replace("-==", " -= ")
+                                .Replace("*==", " *= ")
+                                .Replace("/==", " /= ");
+
                             break;
 
                         //elseの処理
