@@ -262,6 +262,35 @@ namespace hsp.cs
             }
         }
 
+        /// <summary>
+        /// プログラム終了
+        /// </summary>
+        /// <param name="p1">終了コード</param>
+        /// <returns></returns>
+        public static string End(string p1)
+        {
+            if (p1.Equals(""))
+            {
+                return "return 0;";
+            }
+            else
+            {
+                return "return " + p1 + ";";
+            }
+        }
+
+        /// <summary>
+        /// プログラム中断
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <returns></returns>
+        public static string Stop(string p1)
+        {
+            //return "Console.Read();";
+            return End(p1);
+        }
+
+
 
         /*========================================
         　　　　　　　　　関数の定義

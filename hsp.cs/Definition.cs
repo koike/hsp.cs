@@ -28,7 +28,8 @@ namespace hsp.cs
             "swend",
             "swbreak",
             "case",
-            "default"
+            "default",
+            "goto"
         };
 
         //文字列を格納するリスト
@@ -79,7 +80,9 @@ namespace hsp.cs
             "split",
             "strrep",
             "dim",
-            "ddim"
+            "ddim",
+            "end",
+            "stop"
         };
 
         //変数リスト
@@ -113,7 +116,7 @@ namespace hsp.cs
         //Main関数以外の関数の定義
         public static string SubFunction = "";
         //Main関数の定義
-        private const string MainFunction = "public static void Main()\n{\n";
+        private const string MainFunction = "public static int Main()\n{\n";
         //システム変数宣言
         public static string VariableDefinition = "";
         //footer

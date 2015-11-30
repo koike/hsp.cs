@@ -76,6 +76,10 @@ namespace hsp.cs
                 //データの整形
                 //前後の空白文字を削除
                 hspArrayData[i] = hspArrayData[i].Trim();
+                if (hspArrayData[i].Equals(""))
+                {
+                    continue;
+                }
 
                 //直前にエスケープのないダブルクオーテーションが存在した場合
                 //文字列部分をStringListに格納し
@@ -368,6 +372,11 @@ namespace hsp.cs
                         case "loop":
                             hspArrayData[i] = "}";
                             break;
+
+                        //gotoの処理
+                        case "goto":
+                            hspArrayData[i] = hspArrayData[i].Replace("*", "");
+                            break;
                     }
                 }
 
@@ -376,7 +385,12 @@ namespace hsp.cs
                 else if (CommandList.Contains(firstSentence))
                 {
                     //コマンドの引数部分を取得
-                    var commandArguments = hspArrayData[i].Substring(spaceIndex + 1);
+                    var commandArguments = "";
+                    if (spaceIndex > -1)
+                    {
+                        commandArguments = hspArrayData[i].Substring(spaceIndex + 1);
+                    }
+
                     switch (firstSentence)
                     {
                         case "print":
@@ -411,6 +425,12 @@ namespace hsp.cs
                             break;
                         case "ddim":
                             hspArrayData[i] = HSP.Ddim(commandArguments);
+                            break;
+                        case "end":
+                            hspArrayData[i] = HSP.End(commandArguments);
+                            break;
+                        case "stop":
+                            hspArrayData[i] = HSP.Stop(commandArguments);
                             break;
                     }
 
@@ -451,6 +471,13 @@ namespace hsp.cs
                 if (switchFlag)
                 {
                     switchList.Add(i);
+                }
+
+                //ラベルの定義
+                if (hspArrayData[i][0] == '*')
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(1);
+                    hspArrayData[i] += ":";
                 }
             }
 

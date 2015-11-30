@@ -34,3 +34,22 @@ default
 	print "f!=0"
 	swbreak
 swend
+
+print "start"
+goto *one
+
+*two
+	print "two"
+	goto *three
+
+*one
+	print "one"
+	goto *two
+
+*endl
+	print "end"
+	stop
+
+*three
+	print "three"
+	goto *endl
