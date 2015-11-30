@@ -60,6 +60,11 @@ Example:
 - length3
 - length4
 - gettime
+- deg2rad
+- rad2deg
+- strmid
+- strtrim
+- rnd
 
 ## Command
 - print
@@ -68,6 +73,23 @@ Example:
 - delete
 - mkdir
 - split
+- bcopy
+- strrep
+- dim
+- ddim
+- chdir
+- ginfo_mx
+- ginfo_my
+- end
+- stop
+
+## Macro
+- M_PI
+- and
+- not
+- or
+- xor
+- dir_cur
 
 ## Example
 <img src="http://o8o.jp/hsp.cs.png" width="40%">  
@@ -83,35 +105,54 @@ print hoge
 c = 0
 if c==0 : print "c=0" : print "ok"
 d = 1
-if d == 0 {
-        print "no"
+if (d = 0) && (c!=0) && (c=1) {
+	print "no"
 }else{
-        print "yes"
+	print "yes"
 }
 for i,0,3,1
-        print i
+	print i
 next
 e = 3
 while e>0
-        print e
-        e--
+	print e
+	e--
 wend
 repeat 5
-        print cnt
+	print cnt
 loop
 f = 1
 switch f
 case 0
-        print "f=0"
-        swbreak
+	print "f=0"
+	swbreak
 case 1
-        print "f=1"
+	print "f=1"
 case 2
-        print "f=2"
+	print "f=2"
 default
-        print "f!=0"
-        swbreak
+	print "f!=0"
+	swbreak
 swend
+
+print "start"
+goto *one
+
+*two
+	print "two"
+	goto *three
+
+*one
+	print "one"
+	goto *two
+
+*endl
+	print "end"
+	stop
+
+*three
+	print "three"
+	goto *endl
 
 ========================
 
@@ -119,7 +160,7 @@ swend
 using System;
 public class Program
 {
-public static void Main()
+public static int Main()
 {
 int cnt = 0;
 dynamic a = "123";
@@ -127,13 +168,13 @@ dynamic b = "456";
 dynamic hoge =  ( int.Parse ( a + double.Parse ( b ) ) ).ToString();
 Console.WriteLine(hoge);
 dynamic c = 0;
-if (c == 0)
+if(c == 0)
 {
 Console.WriteLine("c=0");
 Console.WriteLine("ok");
 };
 dynamic d = 1;
-if (d == 0)
+if((d==0)&&(c != 0)&&(c==1))
 {
 Console.WriteLine("no");
 }else{
@@ -154,8 +195,8 @@ for (cnt=0; cnt<5; cnt++)
 Console.WriteLine(cnt);
 }
 dynamic f = 1;
-string switchTmpString_5a156ec5380d4edc85b5ccdd7646d24d = f.ToString();
-switch (switchTmpString_5a156ec5380d4edc85b5ccdd7646d24d)
+string switchTmpString_420baab70a6548a391e2cd922d81a5b3 = f.ToString();
+switch (switchTmpString_420baab70a6548a391e2cd922d81a5b3) 
 {
 case "0":
 Console.WriteLine("f=0");
@@ -170,6 +211,25 @@ default:
 Console.WriteLine("f!=0");
 break;
 }
+
+Console.WriteLine("start");
+goto  one;
+
+ two:
+Console.WriteLine("two");
+goto  three;
+
+ one:
+Console.WriteLine("one");
+goto  two;
+
+ endl:
+Console.WriteLine("end");
+return 0;
+
+ three:
+Console.WriteLine("three");
+goto  endl;
 }
 }
 ========================
@@ -201,6 +261,11 @@ yes
 f=1
 f=2
 f!=0
+start
+one
+two
+three
+end
 
 ========================
 ```
