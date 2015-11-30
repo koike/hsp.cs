@@ -478,6 +478,7 @@ namespace hsp.cs
                 {
                     hspArrayData[i] = hspArrayData[i].Substring(1);
                     hspArrayData[i] += ":";
+                    hspArrayData[i] = hspArrayData[i].Trim();
                 }
             }
 
