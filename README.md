@@ -36,6 +36,7 @@ Example:
 - default
 - _break
 - _continue
+- goto
 
 ## Function
 - int
