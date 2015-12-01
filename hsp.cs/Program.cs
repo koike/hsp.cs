@@ -142,6 +142,18 @@ namespace hsp.cs
                     .Replace("\\  =", "\\=")
                     .Trim();
 
+                //ラベルの定義
+                if (hspArrayData[i][0] == '*')
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(1);
+                    hspArrayData[i] = hspArrayData[i].Trim();
+
+                    //ラベル名を退避
+                    LabelList.Add(hspArrayData[i]);
+
+                    hspArrayData[i] += ":";
+                }
+
                 //１番最初のsentenceを抜き出す
                 var spaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.OrdinalIgnoreCase);
                 var firstSentence = spaceIndex < 0
@@ -293,7 +305,7 @@ namespace hsp.cs
                             else
                             {
                                 var switchConditionalSentence = hspArrayData[i].Substring(switchSpaceIndex).Trim();
-                                var switchTmpString = __LocalVariableName("switchTmpString");
+                                var switchTmpString = __LocalName("switchTmpString");
                                 hspArrayData[i] = "string " + switchTmpString + " = " + switchConditionalSentence +
                                                   ".ToString();\n" + "switch (" + switchTmpString + ") \n{";
                             }
@@ -377,6 +389,32 @@ namespace hsp.cs
                         case "goto":
                             hspArrayData[i] = hspArrayData[i].Replace("*", "");
                             break;
+
+                        case "gosub":
+                            if (!Gosub)
+                            {
+                                foreach (var label in LabelList)
+                                {
+                                    GosubMiddle += "case \"" + label + "\":\n"
+                                                   + "goto " + label + ";\n";
+                                }
+                                Using += "using System.Collections.Generic;\n";
+                                VariableDefinition += "var " + Label + " = new List<string>();\n";
+                                Gosub = true;
+                            }
+                            var labelName = hspArrayData[i].Substring("gosub".Length).Trim().Substring(1).Trim();
+                            var returnLabel = __LocalName("returnLabel");
+                            hspArrayData[i] = Label + ".Clear();\n"
+                                              + Label + ".Add(\"" + returnLabel + "\");\n"
+                                              + "goto " + labelName + ";\n"
+                                              + returnLabel + ":";
+                            GosubMiddle += "case \"" + returnLabel + "\":\n"
+                                           + "goto " + returnLabel + ";\n";
+                            break;
+
+                        case "return":
+                            hspArrayData[i] = "goto " + Label + ";";
+                            break;
                     }
                 }
 
@@ -455,7 +493,7 @@ namespace hsp.cs
                     else
                     {
                         //変数リストに含まれていない場合
-                        if (!VariableList.Contains(firstSentence))
+                        if (!VariableList.Contains(firstSentence) && hspArrayData[i][hspArrayData[i].Length-1] != ':')
                         {
                             //変数宣言
                             hspArrayData[i] = "dynamic " + hspArrayData[i];
@@ -471,14 +509,6 @@ namespace hsp.cs
                 if (switchFlag)
                 {
                     switchList.Add(i);
-                }
-
-                //ラベルの定義
-                if (hspArrayData[i][0] == '*')
-                {
-                    hspArrayData[i] = hspArrayData[i].Substring(1);
-                    hspArrayData[i] += ":";
-                    hspArrayData[i] = hspArrayData[i].Trim();
                 }
             }
 
@@ -500,8 +530,17 @@ namespace hsp.cs
             }
 
             //C#のコードを完成
-            var code = Using + Header + SubFunction + MainFunction + VariableDefinition +
+            var code = "";
+            if (Gosub)
+            {
+                code = Using + Header + SubFunction + MainFunction + VariableDefinition +
+                       string.Join("\n", hspArrayData) + "\n" + GosubHeader + GosubMiddle + GosubFooter + Footer;
+            }
+            else
+            {
+                code = Using + Header + SubFunction + MainFunction + VariableDefinition +
                        string.Join("\n", hspArrayData) + Footer;
+            }
 
             //エラー判定
             var error = true;

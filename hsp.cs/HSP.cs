@@ -271,11 +271,11 @@ namespace hsp.cs
         {
             if (p1.Equals(""))
             {
-                return "return 0;";
+                return "return;";
             }
             else
             {
-                return "return " + p1 + ";";
+                return "return " /*+p1*/ + ";";
             }
         }
 
@@ -726,7 +726,7 @@ namespace hsp.cs
                     sentence[j + 2] = "\"%M\"";
                     break;
                 case "2":
-                    var dayOfTheWeek = Program.__LocalVariableName("dayOfTheWeek");
+                    var dayOfTheWeek = Program.__LocalName("dayOfTheWeek");
                     Program.SubFunction += "static int " + dayOfTheWeek + "(string str)\n{\n"
                         + "switch(str)\n{\ncase \"日\":\nreturn 0;" + "\ncase \"月\":\nreturn 1;"
                         + "\ncase \"火\":\nreturn 2;" + "\ncase \"水\":\nreturn 3;"

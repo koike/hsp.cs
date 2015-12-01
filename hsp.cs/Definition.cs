@@ -29,7 +29,9 @@ namespace hsp.cs
             "swbreak",
             "case",
             "default",
-            "goto"
+            "goto",
+            "gosub",
+            "return"
         };
 
         //文字列を格納するリスト
@@ -116,7 +118,7 @@ namespace hsp.cs
         //Main関数以外の関数の定義
         public static string SubFunction = "";
         //Main関数の定義
-        private const string MainFunction = "public static int Main()\n{\n";
+        private const string MainFunction = "public static void Main()\n{\n";
         //システム変数宣言
         public static string VariableDefinition = "";
         //footer
@@ -139,13 +141,21 @@ namespace hsp.cs
         private static List<char> VariableNameRule =
             "0123456789!\"#$%&'()-^\\=~|@[`{;:]+*},./<>?".ToCharArray().ToList();
 
+        private static List<string> LabelList = new List<string>();
+
+        private static string Label = __LocalName("label");
+        private static string GosubHeader =  Label + ":\n" + "switch(" + Label + "[0])\n" + "{\n";
+        private static string GosubMiddle = "";
+        private static string GosubFooter = "}";
+        private static bool Gosub = false;
+
         /// <summary>
         /// ローカル変数名を作成する関数
         /// GUIDを生成し, 変数名の末尾に追加する
         /// </summary>
         /// <param name="variableName"></param>
         /// <returns></returns>
-        public static string __LocalVariableName(string variableName)
+        public static string __LocalName(string variableName)
         {
             return variableName + "_" + Guid.NewGuid().ToString("N");
         }

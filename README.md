@@ -5,6 +5,7 @@ HSPのコードをC#に変換し, 実行します
 [The MIT License](https://github.com/kkrnt/hsp.cs/blob/master/LICENSE)
 
 ## Download
+[v0.1.4](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.4)  
 [v0.1.3](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.3)  
 [v0.1.2](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.2)  
 [v0.1.1](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.1)  
@@ -38,6 +39,7 @@ Example:
 - _break
 - _continue
 - goto
+- gosub
 
 ## Function
 - int
@@ -108,63 +110,67 @@ c = 0
 if c==0 : print "c=0" : print "ok"
 d = 1
 if (d = 0) && (c!=0) && (c=1) {
-	print "no"
+        print "no"
 }else{
-	print "yes"
+        print "yes"
 }
 for i,0,3,1
-	print i
+        print i
 next
 e = 3
 while e>0
-	print e
-	e--
+        print e
+        e--
 wend
 repeat 5
-	print cnt
+        print cnt
 loop
 f = 1
 switch f
 case 0
-	print "f=0"
-	swbreak
+        print "f=0"
+        swbreak
 case 1
-	print "f=1"
+        print "f=1"
 case 2
-	print "f=2"
+        print "f=2"
 default
-	print "f!=0"
-	swbreak
+        print "f!=0"
+        swbreak
 swend
 
 print "start"
 goto *one
 
 *two
-	print "two"
-	goto *three
+        print "two"
+        goto *three
 
 *one
-	print "one"
-	goto *two
+        print "one"
+        goto *two
 
 *endl
-	print "end"
-	stop
+        print "end"
+        return
 
 *three
-	print "three"
-	goto *endl
+        print "three"
+        gosub *endl
+        print "gosub ok"
+        stop
 
 ========================
 
 <C# Code>
 using System;
+using System.Collections.Generic;
 public class Program
 {
-public static int Main()
+public static void Main()
 {
 int cnt = 0;
+var label_bf4ae00a07014dd491434044a809f636 = new List<string>();
 dynamic a = "123";
 dynamic b = "456";
 dynamic hoge =  ( int.Parse ( a + double.Parse ( b ) ) ).ToString();
@@ -197,8 +203,8 @@ for (cnt=0; cnt<5; cnt++)
 Console.WriteLine(cnt);
 }
 dynamic f = 1;
-string switchTmpString_420baab70a6548a391e2cd922d81a5b3 = f.ToString();
-switch (switchTmpString_420baab70a6548a391e2cd922d81a5b3) 
+string switchTmpString_e3403cfa78c14044a52e1ed1f84e1aa2 = f.ToString();
+switch (switchTmpString_e3403cfa78c14044a52e1ed1f84e1aa2)
 {
 case "0":
 Console.WriteLine("f=0");
@@ -217,21 +223,40 @@ break;
 Console.WriteLine("start");
 goto  one;
 
- two:
+two:
 Console.WriteLine("two");
 goto  three;
 
- one:
+one:
 Console.WriteLine("one");
 goto  two;
 
- endl:
+endl:
 Console.WriteLine("end");
-return 0;
+goto label_bf4ae00a07014dd491434044a809f636;
 
- three:
+three:
 Console.WriteLine("three");
-goto  endl;
+label_bf4ae00a07014dd491434044a809f636.Clear();
+label_bf4ae00a07014dd491434044a809f636.Add("returnLabel_ef8db3b5707d4e23ae0ea1f630751a95");
+goto endl;
+returnLabel_ef8db3b5707d4e23ae0ea1f630751a95:
+Console.WriteLine("gosub ok");
+return;
+label_bf4ae00a07014dd491434044a809f636:
+switch(label_bf4ae00a07014dd491434044a809f636[0])
+{
+case "two":
+goto two;
+case "one":
+goto one;
+case "endl":
+goto endl;
+case "three":
+goto three;
+case "returnLabel_ef8db3b5707d4e23ae0ea1f630751a95":
+goto returnLabel_ef8db3b5707d4e23ae0ea1f630751a95;
+}
 }
 }
 ========================
@@ -268,6 +293,7 @@ one
 two
 three
 end
+gosub ok
 
 ========================
 ```

@@ -48,8 +48,10 @@ goto *one
 
 *endl
 	print "end"
-	stop
+	return
 
 *three
 	print "three"
-	goto *endl
+	gosub *endl
+	print "gosub ok"
+	stop
