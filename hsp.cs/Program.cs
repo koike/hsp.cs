@@ -148,9 +148,6 @@ namespace hsp.cs
                     hspArrayData[i] = hspArrayData[i].Substring(1);
                     hspArrayData[i] = hspArrayData[i].Trim();
 
-                    //ラベル名を退避
-                    LabelList.Add(hspArrayData[i]);
-
                     hspArrayData[i] += ":";
                 }
 
@@ -391,29 +388,10 @@ namespace hsp.cs
                             break;
 
                         case "gosub":
-                            if (!Gosub)
-                            {
-                                foreach (var label in LabelList)
-                                {
-                                    GosubMiddle += "case \"" + label + "\":\n"
-                                                   + "goto " + label + ";\n";
-                                }
-                                Using += "using System.Collections.Generic;\n";
-                                VariableDefinition += "var " + Label + " = new List<string>();\n";
-                                Gosub = true;
-                            }
-                            var labelName = hspArrayData[i].Substring("gosub".Length).Trim().Substring(1).Trim();
-                            var returnLabel = __LocalName("returnLabel");
-                            hspArrayData[i] = Label + ".Clear();\n"
-                                              + Label + ".Add(\"" + returnLabel + "\");\n"
-                                              + "goto " + labelName + ";\n"
-                                              + returnLabel + ":";
-                            GosubMiddle += "case \"" + returnLabel + "\":\n"
-                                           + "goto " + returnLabel + ";\n";
-                            break;
-
-                        case "return":
-                            hspArrayData[i] = "goto " + Label + ";";
+                            hspArrayData[i] = "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "");
+                            var label = __LocalName("label");
+                            hspArrayData.Insert(i+1, label + ":");
+                            ReturnLabelList.Add(label);
                             break;
                     }
                 }
@@ -512,6 +490,17 @@ namespace hsp.cs
                 }
             }
 
+            //returnの処理
+            for (var i = 0; i < hspArrayData.Count; i++)
+            {
+                if (hspArrayData[i].Equals("return"))
+                {
+                    var returnLabel = ReturnLabelList[ReturnLabelList.Count - 1];
+                    ReturnLabelList.RemoveAt(ReturnLabelList.Count - 1);
+                    hspArrayData[i] = "goto " + returnLabel;
+                }
+            }
+
             //文字列をアンエスケープ
             hspArrayData = Analyzer.StringUnEscape(hspArrayData);
 
@@ -530,17 +519,8 @@ namespace hsp.cs
             }
 
             //C#のコードを完成
-            var code = "";
-            if (Gosub)
-            {
-                code = Using + Header + SubFunction + MainFunction + VariableDefinition +
-                       string.Join("\n", hspArrayData) + "\n" + GosubHeader + GosubMiddle + GosubFooter + Footer;
-            }
-            else
-            {
-                code = Using + Header + SubFunction + MainFunction + VariableDefinition +
+            var code = Using + Header + SubFunction + MainFunction + VariableDefinition +
                        string.Join("\n", hspArrayData) + Footer;
-            }
 
             //エラー判定
             var error = true;

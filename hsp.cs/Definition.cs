@@ -141,13 +141,7 @@ namespace hsp.cs
         private static List<char> VariableNameRule =
             "0123456789!\"#$%&'()-^\\=~|@[`{;:]+*},./<>?".ToCharArray().ToList();
 
-        private static List<string> LabelList = new List<string>();
-
-        private static string Label = __LocalName("label");
-        private static string GosubHeader =  Label + ":\n" + "switch(" + Label + "[0])\n" + "{\n";
-        private static string GosubMiddle = "";
-        private static string GosubFooter = "}";
-        private static bool Gosub = false;
+        private static List<string> ReturnLabelList = new List<string>(); 
 
         /// <summary>
         /// ローカル変数名を作成する関数
