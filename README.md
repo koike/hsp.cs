@@ -162,105 +162,91 @@ goto *one
         stop
 
 ========================
-
+```
+```cs
 <C# Code>
 using System;
-using System.Collections.Generic;
 public class Program
 {
-public static void Main()
-{
-int cnt = 0;
-var label_bf4ae00a07014dd491434044a809f636 = new List<string>();
-dynamic a = "123";
-dynamic b = "456";
-dynamic hoge =  ( int.Parse ( a + double.Parse ( b ) ) ).ToString();
-Console.WriteLine(hoge);
-dynamic c = 0;
-if(c == 0)
-{
-Console.WriteLine("c=0");
-Console.WriteLine("ok");
-};
-dynamic d = 1;
-if((d==0)&&(c != 0)&&(c==1))
-{
-Console.WriteLine("no");
-}else{
-Console.WriteLine("yes");
-}
-for (var i = 0; i != 3; i += 1 )
-{
-Console.WriteLine(i);
-}
-dynamic e = 3;
-while (e>0)
-{
-Console.WriteLine(e);
-e --;
-}
-for (cnt=0; cnt<5; cnt++)
-{
-Console.WriteLine(cnt);
-}
-dynamic f = 1;
-string switchTmpString_e3403cfa78c14044a52e1ed1f84e1aa2 = f.ToString();
-switch (switchTmpString_e3403cfa78c14044a52e1ed1f84e1aa2)
-{
-case "0":
-Console.WriteLine("f=0");
-break;
-case "1":
-Console.WriteLine("f=1");
-goto case "2";
-case "2":
-Console.WriteLine("f=2");Console.WriteLine("f!=0");
-break;
-default:
-Console.WriteLine("f!=0");
-break;
-}
+    public static void Main()
+    {
+        int cnt = 0;
+        dynamic a = "123";
+        dynamic b = "456";
+        dynamic hoge = (int.Parse(a + double.Parse(b))).ToString();
+        Console.WriteLine(hoge);
+        dynamic c = 0;
+        if (c == 0)
+        {
+            Console.WriteLine("c=0");
+            Console.WriteLine("ok");
+        };
+        dynamic d = 1;
+        if ((d == 0) && (c != 0) && (c == 1))
+        {
+            Console.WriteLine("no");
+        }
+        else {
+            Console.WriteLine("yes");
+        }
+        for (var i = 0; i != 3; i += 1)
+        {
+            Console.WriteLine(i);
+        }
+        dynamic e = 3;
+        while (e > 0)
+        {
+            Console.WriteLine(e);
+            e--;
+        }
+        for (cnt = 0; cnt < 5; cnt++)
+        {
+            Console.WriteLine(cnt);
+        }
+        dynamic f = 1;
+        string switchTmpString_33f439208b5140bda9a271d3befaedab = f.ToString();
+        switch (switchTmpString_33f439208b5140bda9a271d3befaedab)
+        {
+            case "0":
+                Console.WriteLine("f=0");
+                break;
+            case "1":
+                Console.WriteLine("f=1");
+                goto case "2";
+            case "2":
+                Console.WriteLine("f=2"); Console.WriteLine("f!=0");
+                break;
+            default:
+                Console.WriteLine("f!=0");
+                break;
+        }
 
-Console.WriteLine("start");
-goto  one;
+        Console.WriteLine("start");
+        goto one;
 
-two:
-Console.WriteLine("two");
-goto  three;
+    two:
+        Console.WriteLine("two");
+        goto three;
 
-one:
-Console.WriteLine("one");
-goto  two;
+    one:
+        Console.WriteLine("one");
+        goto two;
 
-endl:
-Console.WriteLine("end");
-goto label_bf4ae00a07014dd491434044a809f636;
+    endl:
+        Console.WriteLine("end");
+        goto label_5b67b9634c834712bc6520fd40b8a062;
 
-three:
-Console.WriteLine("three");
-label_bf4ae00a07014dd491434044a809f636.Clear();
-label_bf4ae00a07014dd491434044a809f636.Add("returnLabel_ef8db3b5707d4e23ae0ea1f630751a95");
-goto endl;
-returnLabel_ef8db3b5707d4e23ae0ea1f630751a95:
-Console.WriteLine("gosub ok");
-return;
-label_bf4ae00a07014dd491434044a809f636:
-switch(label_bf4ae00a07014dd491434044a809f636[0])
-{
-case "two":
-goto two;
-case "one":
-goto one;
-case "endl":
-goto endl;
-case "three":
-goto three;
-case "returnLabel_ef8db3b5707d4e23ae0ea1f630751a95":
-goto returnLabel_ef8db3b5707d4e23ae0ea1f630751a95;
-}
-}
+    three:
+        Console.WriteLine("three");
+        goto endl;
+    label_5b67b9634c834712bc6520fd40b8a062:
+        Console.WriteLine("gosub ok");
+        return;
+    }
 }
 ========================
+```
+```
 
 構文エラーなし
 

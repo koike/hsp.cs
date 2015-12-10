@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CSharp;
 
 namespace hsp.cs
@@ -537,6 +539,12 @@ namespace hsp.cs
             };
 
             var tree = CSharpSyntaxTree.ParseText(code);
+
+            //コードを整形する
+            code = Formatter.Format(tree.GetRoot(), MSBuildWorkspace.Create()).ToFullString();
+
+            //ハイライト用の前処理
+            tree = CSharpSyntaxTree.ParseText(code);
             var compilation = CSharpCompilation.Create("code", syntaxTrees: new[] { tree }, references: references);
 
             Console.WriteLine("<C# Code>");
