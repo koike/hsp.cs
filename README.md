@@ -5,6 +5,7 @@ HSPのコードをC#に変換し, 実行します
 [The MIT License](https://github.com/kkrnt/hsp.cs/blob/master/LICENSE)
 
 ## Download
+[v0.1.6](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.6)  
 [v0.1.5](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.5)  
 [v0.1.4](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.4)  
 [v0.1.3](https://github.com/kkrnt/hsp.cs/releases/tag/v0.1.3)  
