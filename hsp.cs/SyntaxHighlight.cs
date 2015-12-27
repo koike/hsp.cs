@@ -4,17 +4,33 @@
 ===============================*/
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace hsp.cs
 {
+    public class Syntax
+    {
+        public string Code;
+        public ConsoleColor Color;
+
+        public Syntax(string code, ConsoleColor color)
+        {
+            Code = code;
+            Color = color;
+        }
+    }
+
     /// <summary>
     /// C#のコードにシンタックスハイライトを付けて表示
     /// </summary>
     public class SyntaxHighlight : SyntaxWalker
     {
+        public List<Syntax> view = new List<Syntax>(); 
+
         private SemanticModel semanticModel;
         private SyntaxTree tree;
 
@@ -47,9 +63,7 @@ namespace hsp.cs
             // キーワードであるか
             if (token.IsKeyword())
             {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(token.ValueText);
-                Console.ResetColor();
+                view.Add(new Syntax(token.ValueText, ConsoleColor.Blue));
                 isProcessed = true;
 
             }
@@ -59,36 +73,31 @@ namespace hsp.cs
                 {
                     // 各種リテラルであるか
                     case SyntaxKind.StringLiteralToken:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write('"' + token.ValueText + '"');
+                        view.Add(new Syntax('"' + token.ValueText + '"', ConsoleColor.Red));
                         isProcessed = true;
                         break;
                     case SyntaxKind.CharacterLiteralToken:
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(token.ValueText);
+                        view.Add(new Syntax(token.ValueText, ConsoleColor.Magenta));
                         isProcessed = true;
                         break;
                     case SyntaxKind.NumericLiteralToken:
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.Write(token.ValueText);
+                        view.Add(new Syntax(token.ValueText, ConsoleColor.DarkGreen));
                         isProcessed = true;
                         break;
                     case SyntaxKind.IdentifierToken:
                         // 何かの名前(変数等)を参照しようとした場合
-                        var syntax = token.Parent as SimpleNameSyntax;
-                        if (syntax != null)
+                        if (token.Parent is SimpleNameSyntax)
                         {
-                            var name = syntax;
+                            var name = (SimpleNameSyntax)token.Parent;
                             // 参照先に関する情報を取得
-                            var info = ModelExtensions.GetSymbolInfo(semanticModel, name);
+                            var info = semanticModel.GetSymbolInfo(name);
                             if (info.Symbol != null && info.Symbol.Kind != SymbolKind.ErrorType)
                             {
                                 switch (info.Symbol.Kind)
                                 {
                                     case SymbolKind.NamedType:
                                         // クラスや列挙などの場合は色づけ
-                                        Console.ForegroundColor = ConsoleColor.Cyan;
-                                        Console.Write(token.ValueText);
+                                        view.Add(new Syntax(token.ValueText, ConsoleColor.Cyan));
                                         isProcessed = true;
                                         break;
                                     case SymbolKind.Namespace:
@@ -97,8 +106,7 @@ namespace hsp.cs
                                     case SymbolKind.Field:
                                     case SymbolKind.Property:
                                         // それ以外は通常の色
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                        Console.Write(token.ValueText);
+                                        view.Add(new Syntax(token.ValueText, ConsoleColor.White));
                                         isProcessed = true;
                                         break;
                                 }
@@ -108,15 +116,13 @@ namespace hsp.cs
                         {
                             // 宣言時のStatementがヒットした場合
                             var name = (TypeDeclarationSyntax)token.Parent;
-                            var info = ModelExtensions.GetDeclaredSymbol(semanticModel, name);
+                            var info = semanticModel.GetDeclaredSymbol(name);
                             if (info != null && info.Kind != SymbolKind.ErrorType)
                             {
                                 switch (info.Kind)
                                 {
                                     case SymbolKind.NamedType:
-                                        Console.ForegroundColor = ConsoleColor.Cyan;
-                                        Console.Write(token.ValueText);
-                                        Console.ResetColor();
+                                        view.Add(new Syntax(token.ValueText, ConsoleColor.Cyan));
                                         isProcessed = true;
                                         break;
                                 }
@@ -124,14 +130,12 @@ namespace hsp.cs
                         }
                         break;
                 }
-                Console.ResetColor();
             }
 
+            // それ以外の項目 (今のところ、特殊例はすべて色づけしない)
             if (!isProcessed)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(token.ValueText);
-                Console.ResetColor();
+                view.Add(new Syntax(token.ValueText, ConsoleColor.White));
             }
 
             if (token.HasTrailingTrivia)
@@ -151,31 +155,36 @@ namespace hsp.cs
                 // コメント
                 case SyntaxKind.MultiLineCommentTrivia:
                 case SyntaxKind.SingleLineCommentTrivia:
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.Green));
+                    break;
+                // 無効になっているテキスト
+                case SyntaxKind.DisabledTextTrivia:
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.DarkGreen));
+                    break;
                 // ドキュメントコメント
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
                 case SyntaxKind.DocumentationCommentExteriorTrivia:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(trivia.ToFullString());
-                    break;
-                // 無効になっているテキスト
-                case SyntaxKind.DisabledTextTrivia:
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write(trivia.ToFullString());
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.Green));
                     break;
                 // #region
                 case SyntaxKind.RegionDirectiveTrivia:
                 case SyntaxKind.EndRegionDirectiveTrivia:
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.Write(trivia.ToFullString());
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.Gray));
+                    break;
+                // 空白
+                case SyntaxKind.WhitespaceTrivia:
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.White));
+                    break;
+                // 改行
+                case SyntaxKind.EndOfLineTrivia:
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.White));
                     break;
                 // それ以外
                 default:
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(trivia.ToFullString());
+                    view.Add(new Syntax(trivia.ToFullString(), ConsoleColor.White));
                     break;
             }
-            Console.ResetColor();
             base.VisitTrivia(trivia);
         }
     }

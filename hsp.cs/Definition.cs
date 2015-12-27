@@ -143,6 +143,8 @@ namespace hsp.cs
 
         private static List<string> ReturnLabelList = new List<string>(); 
 
+        public static List<int[]> errorLine = new List<int[]>(); 
+
         /// <summary>
         /// ローカル変数名を作成する関数
         /// GUIDを生成し, 変数名の末尾に追加する

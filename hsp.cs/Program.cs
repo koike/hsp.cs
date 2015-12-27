@@ -551,10 +551,40 @@ namespace hsp.cs
             //コードをハイライト付けて表示
             var syntax = new SyntaxHighlight(compilation, tree);
             syntax.highlight();
+            var syntaxDiagnostics = tree.GetDiagnostics().ToList();
+
+            if (syntaxDiagnostics.Count > 0)
+            {
+                foreach (var diagnostics in syntaxDiagnostics)
+                {
+                    var e =
+                        diagnostics.ToString().Split(':')[0].Replace("(", "")
+                            .Replace(")", "")
+                            .Split(',')
+                            .Select(i => int.Parse(i.Trim()))
+                            .ToArray();
+                    errorLine.Add(e);
+                }
+            }
+
+            var line = 0;
+            for (var i = 0; i < syntax.view.Count; i++)
+            {
+                for (var j = 0; j < errorLine.Count; j++)
+                {
+                    if (errorLine[j][0] == line + 1)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Red;
+                    }
+                }
+                Console.ForegroundColor = syntax.view[i].Color;
+                Console.Write(syntax.view[i].Code);
+                Console.ResetColor();
+                line += syntax.view[i].Code.Length - syntax.view[i].Code.Replace("\n", "").Length;
+            }
 
             Console.WriteLine("\n========================\n");
 
-            var syntaxDiagnostics = tree.GetDiagnostics().ToList();
             if (syntaxDiagnostics.Count > 0)
             {
                 Console.WriteLine("<構文エラー>");
