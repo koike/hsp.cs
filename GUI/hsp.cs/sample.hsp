@@ -1,5 +1,6 @@
 screen 0, 640, 480
 
+//ブロックの初期化
 blockX = 160
 blockY = 80
 dim block, ginfo_sizex/blockX, ginfo_sizey/blockY/3
@@ -9,20 +10,28 @@ for i, 0, ginfo_sizex/blockX, 1
 	next
 next
 
+//ボールの座標
 ballX = 400
 ballY = 400
-
+//ボールの移動量
 incX = 10
 incY = 10
 
+//バーの座標
 barX = 0
 barY = 400
+//バーの移動量
 barInc = 25
 
 *main
+	//画面がチラつかないように
+	redraw 0
+	
+	//画面を初期化
 	color 255, 255, 255
 	boxf
 	
+	//ブロックを描画
 	color 0, 0, 0
 	for i, 0, ginfo_sizex/blockX, 1
 		for j, 0, ginfo_sizey/blockY/3, 1
@@ -32,15 +41,19 @@ barInc = 25
 		next
 	next
 	
+	//ボールを描画
 	color 255, 0, 0
 	circle ballX, ballY, ballX + 20, ballY + 20
 	
+	//ボールを移動
 	ballX += incX
 	ballY += incY
 	
+	//バーを描画
 	color 0, 0, 255
 	boxf barX, barY, barX + 100, barY + 20
 	
+	//バーを移動
 	getkey right, 37
 	getkey left, 39
 	if(left == 1){
@@ -50,6 +63,7 @@ barInc = 25
 		barX -= barInc
 	}
 	
+	//ボールと壁の衝突判定
 	if(ballX + 20 > ginfo_sizex || ballX < 20){
 		incX *= -1
 	}
@@ -57,16 +71,22 @@ barInc = 25
 		incY *= -1
 	}
 	
+	//ボールとブロックの衝突判定
 	x = int(ballX / blockX)
 	y = int(ballY / blockY)
 	if(x >= 0 && y >= 0 && x < ginfo_sizex/blockX && y < ginfo_sizey/blockY/3){
 		block(x, y) = 0
 	}
 	
+	//ボールとバーの衝突判定
 	if(ballX > barX && ballX < barX + 100 && ballY > barY && ballY < barY + 20){
 		incY *= -1
 	}
 	
+	//画面がチラつかないように
+	redraw 1
+	
+	//終了判定
 	count = 0
 	for i, 0, ginfo_sizex/blockX, 1
 		for j, 0, ginfo_sizey/blockY/3, 1
@@ -81,4 +101,4 @@ barInc = 25
 	}
 	
 	wait 2
-goto *main
+	goto *main

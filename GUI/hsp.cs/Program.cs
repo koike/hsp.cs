@@ -78,6 +78,14 @@ namespace hsp.cs
                 //データの整形
                 //前後の空白文字を削除
                 hspArrayData[i] = hspArrayData[i].Trim();
+
+                //'//'を使ったコメントアウトを削除
+                var commentOutIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
+                if (commentOutIndex > -1)
+                {
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentOutIndex).Trim();
+                }
+
                 if (hspArrayData[i].Equals(""))
                 {
                     continue;
