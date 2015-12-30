@@ -251,23 +251,26 @@ namespace hsp.cs
                         case "mousey":
                             HSPGUI.Mousey(sentence, i);
                             break;
+                        case "dir_cmdline":
+                            HSP.Directory(sentence, i, "cmdline");
+                            break;
                         case "dir_cur":
-                            HSP.Dir_cur(sentence, i);
+                            HSP.Directory(sentence, i, "cur");
                             break;
                         case "dir_desktop":
-                            HSP.Dir_desktop(sentence, i);
+                            HSP.Directory(sentence, i, "desktop");
                             break;
                         case "dir_exe":
-                            HSP.Dir_exe(sentence, i);
+                            HSP.Directory(sentence, i, "exe");
                             break;
                         case "dir_mydoc":
-                            HSP.Dir_mydoc(sentence, i);
+                            HSP.Directory(sentence, i, "mydoc");
                             break;
                         case "dir_sys":
-                            HSP.Dir_sys(sentence, i);
+                            HSP.Directory(sentence, i, "sys");
                             break;
                         case "dir_win":
-                            HSP.Dir_win(sentence, i);
+                            HSP.Directory(sentence, i, "win");
                             break;
                         case "ginfo_mx":
                             HSP.Ginfo_mx(sentence, i);

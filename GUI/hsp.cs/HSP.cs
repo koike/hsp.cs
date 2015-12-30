@@ -775,34 +775,32 @@ namespace hsp.cs
             sentence[i] = "^";
         }
 
-        public static void Dir_cur(List<string> sentence, int i)
+        public static void Directory(List<string> sentence, int i, string str)
         {
-            sentence[i] = "Environment.CurrentDirectory";
-        }
-
-        public static void Dir_desktop(List<string> sentence, int i)
-        {
-            sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)";
-        }
-
-        public static void Dir_exe(List<string> sentence, int i)
-        {
-            sentence[i] = "Application.ExecutablePath";
-        }
-
-        public static void Dir_mydoc(List<string> sentence, int i)
-        {
-            sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.Personal)";
-        }
-
-        public static void Dir_sys(List<string> sentence, int i)
-        {
-            sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.System)";
-        }
-
-        public static void Dir_win(List<string> sentence, int i)
-        {
-            sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.Windows)";
+            switch (str)
+            {
+                case "cmdline":
+                    sentence[i] = "Environment.CommandLine.Substring(Environment.CommandLine.IndexOf(\" \") + 1)";
+                    break;
+                case "cur":
+                    sentence[i] = "Environment.CurrentDirectory";
+                    break;
+                case "desktop":
+                    sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)";
+                    break;
+                case "exe":
+                    sentence[i] = "Environment.GetCommandLineArgs()[0]";
+                    break;
+                case "mydoc":
+                    sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.Personal)";
+                    break;
+                case "sys":
+                    sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.System)";
+                    break;
+                case "win":
+                    sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.Windows)";
+                    break;
+            }
         }
 
         public static void Ginfo_mx(List<string> sentence, int i)

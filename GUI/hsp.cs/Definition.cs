@@ -120,6 +120,7 @@ namespace hsp.cs
             "xor",
             "mousex",
             "mousey",
+            "dir_cmdline",
             "dir_cur",
             "dir_desktop",
             "dir_exe",
