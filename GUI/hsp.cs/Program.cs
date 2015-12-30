@@ -463,6 +463,9 @@ namespace hsp.cs
                         case "title":
                             hspArrayData[i] = HSPGUI.Title(commandArguments);
                             break;
+                        case "redraw":
+                            hspArrayData[i] = HSPGUI.Redraw(commandArguments);
+                            break;
                         case "circle":
                             hspArrayData[i] = HSPGUI.Circle(commandArguments);
                             break;

@@ -10,6 +10,8 @@ namespace hsp.cs
 {
     public class HSPGUI : Form
     {
+        public static bool BufferFlag = false;
+
         public HSPGUI()
         {
             //
@@ -105,6 +107,36 @@ namespace hsp.cs
             return "program.Title(CurrentScreenID, " + strings + ")";
         }
 
+        public static string Redraw(string strings)
+        {
+            var p = strings.Split(',');
+
+            for (var i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+            if (p.Count() == 1)
+            {
+                switch(p[0])
+                {
+                    case "0":
+                        BufferFlag = true;
+                        return "BufferedGraphicsContext bgc = BufferedGraphicsManager.Current;\n" +
+                               "BufferedGraphics bgr = bgc.Allocate(CurrentScreenID.CreateGraphics(), CurrentScreenID.DisplayRectangle)";
+                    case "1":
+                        BufferFlag = false;
+                        return "bgr.Render()";
+                    case "2":
+                        return "";
+                    case "3":
+                        return "";
+                    default :
+                        return "Console.WriteLine(\"error\")";
+                }
+            }
+            return "Console.WriteLine(\"error\")";
+        }
+
         public static string Circle(string strings)
         {
             var p = strings.Split(',');
@@ -126,22 +158,31 @@ namespace hsp.cs
                 p[1] = p[3];
                 p[3] = temp;
             }*/
+            var str = "";
+            if (BufferFlag)
+            {
+                str = "bgr.Graphics.";
+            }
+            else
+            {
+                str = "g.";
+            }
 
             if (p.Count() == 4)
             {
-                return "g.FillEllipse(brush, " + p[0] + ", " + p[1] + ", " + 
+                return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " + 
                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
             else if (p.Count() == 5)
             {
                 if (p[4].Equals("0"))
                 {
-                    return "g.DrawEllipse(pen, " + p[0] + ", " + p[1] + ", " + 
+                    return str + "DrawEllipse(pen, " + p[0] + ", " + p[1] + ", " + 
                            p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
                 }
                 else
                 {
-                    return "g.FillEllipse(brush, " + p[0] + ", " + p[1] + ", " + 
+                    return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " + 
                            p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
                 }
             }
@@ -160,14 +201,24 @@ namespace hsp.cs
                 p[i] = p[i].Trim();
             }
 
+            var str = "";
+            if (BufferFlag)
+            {
+                str = "bgr.Graphics.";
+            }
+            else
+            {
+                str = "g.";
+            }
+
             if (p.Count() == 1)
             {
-                return "g.FillRectangle(brush, 0, 0, " +
+                return str + "FillRectangle(brush, 0, 0, " +
                        "CurrentScreenID.Width, " + "CurrentScreenID.Height)";
             }
             else if (p.Count() == 2)
             {
-                return "g.FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
+                return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
                        "CurrentScreenID.Width, " + "CurrentScreenID.Height)";
             }
             else if (p.Count() == 4)
@@ -202,7 +253,7 @@ namespace hsp.cs
                     p[3] = "CurrentScreenID.Height";
                 }
 
-                return "g.FillRectangle(brush, " + p[0] + ", " + p[1] + ", " + 
+                return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " + 
                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
             else
@@ -220,14 +271,24 @@ namespace hsp.cs
                 p[i] = p[i].Trim();
             }
 
+            var str = "";
+            if (BufferFlag)
+            {
+                str = "bgr.Graphics.";
+            }
+            else
+            {
+                str = "g.";
+            }
+
             if (p.Count() == 2)
             {
-                return "g.DrawLine(pen, CurrentPosX, CurrentPosY, " + p[0] + ", " + p[1] + ");\n" +
+                return str + "DrawLine(pen, CurrentPosX, CurrentPosY, " + p[0] + ", " + p[1] + ");\n" +
                        "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
             }
             else if (p.Count() == 4)
             {
-                return "g.DrawLine(pen, " + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");\n" +
+                return str + "DrawLine(pen, " + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");\n" +
                        "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
             }
             else

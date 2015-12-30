@@ -90,6 +90,7 @@ namespace hsp.cs
             "pos",
             "screen",
             "title",
+            "redraw",
             "circle",
             "boxf",
             "line",
