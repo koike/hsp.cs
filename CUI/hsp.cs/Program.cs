@@ -78,6 +78,7 @@ namespace hsp.cs
                 //データの整形
                 //前後の空白文字を削除
                 hspArrayData[i] = hspArrayData[i].Trim();
+
                 if (hspArrayData[i].Equals(""))
                 {
                     continue;
@@ -93,31 +94,36 @@ namespace hsp.cs
                 hspArrayData[i] = Analyzer.StringEscape(hspArrayData[i]);
 
                 //コメントを取り除く
-                //スラッシュ2つによるコメントアウトを取り除く
-                var commentIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
-                if (commentIndex > -1)
+                var commentOutIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
+                if (commentOutIndex > -1)
                 {
-                    hspArrayData[i] = hspArrayData[i].Substring(0, commentIndex).Trim();
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentOutIndex).Trim();
                 }
+
                 //スラッシュとアスタリスクによるコメントアウトをエスケープする
-                commentIndex = hspArrayData[i].IndexOf("/*", StringComparison.Ordinal);
-                if (commentIndex > -1)
+                commentOutIndex = hspArrayData[i].IndexOf("/*", StringComparison.Ordinal);
+                if (commentOutIndex > -1)
                 {
-                    hspArrayData[i] = hspArrayData[i].Substring(0, commentIndex).Trim();
+                    hspArrayData[i] = hspArrayData[i].Substring(0, commentOutIndex).Trim();
                     commentFlag = true;
                 }
                 if (commentFlag)
                 {
-                    commentIndex = hspArrayData[i].IndexOf("*/", StringComparison.Ordinal);
-                    if (commentIndex > -1)
+                    commentOutIndex = hspArrayData[i].IndexOf("*/", StringComparison.Ordinal);
+                    if (commentOutIndex > -1)
                     {
-                        hspArrayData[i] = hspArrayData[i].Substring(commentIndex + "*/".Length).Trim();
+                        hspArrayData[i] = hspArrayData[i].Substring(commentOutIndex + "*/".Length).Trim();
                         commentFlag = false;
                     }
                     else
                     {
                         continue;
                     }
+                }
+
+                if (hspArrayData[i].Equals(""))
+                {
+                    continue;
                 }
 
                 hspArrayData[i] = hspArrayData[i]
