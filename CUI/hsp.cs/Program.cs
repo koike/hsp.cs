@@ -624,8 +624,8 @@ namespace hsp.cs
                 Console.WriteLine("<実行結果>");
 
                 var param = commandLineOption[0]
-                    ? new CompilerParameters()
-                    : new CompilerParameters { GenerateExecutable = true, OutputAssembly = executiveFileName };
+                    ? new CompilerParameters {GenerateExecutable = true, OutputAssembly = executiveFileName}
+                    : new CompilerParameters();
 
                 param.ReferencedAssemblies.AddRange(new string[]
                 {
