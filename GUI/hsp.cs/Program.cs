@@ -61,7 +61,7 @@ namespace hsp.cs
             }
 
             //hspファイルを読み込み
-            var sr = new StreamReader(hspFileName, Encoding.UTF8);
+            var sr = new StreamReader(hspFileName, Encoding.Default);
             //全て小文字にして全角スペースとタブを半角スペースに変換し, 改行でスプリット
             var hspArrayData = sr.ReadToEnd().ToLower().Split('\n').Where(i => i.Length != 0).ToList();
             sr.Close();
