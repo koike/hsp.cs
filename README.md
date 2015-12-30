@@ -134,7 +134,7 @@ Example:
 - __time__
 
 ## Example
-<video src="hsp.cs.mp4" width="40%"></video>
+<video src="hsp.cs.mp4" width="40%" controls preload></video>
 ```
 hsp.cs.exe sample.hsp
 
