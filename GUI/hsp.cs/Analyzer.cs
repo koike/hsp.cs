@@ -329,6 +329,42 @@ namespace hsp.cs
                         case "__time__":
                             HSPGUI.__time__(sentence, i);
                             break;
+                        case "msgothic":
+                            HSPGUI.Msgothic(sentence, i);
+                            break;
+                        case "msmincho":
+                            HSPGUI.Msmincho(sentence, i);
+                            break;
+                        case "font_normal":
+                            HSPGUI.Font_normal(sentence, i);
+                            break;
+                        case "font_bold":
+                            HSPGUI.Font_bold(sentence, i);
+                            break;
+                        case "font_italic":
+                            HSPGUI.Font_italic(sentence, i);
+                            break;
+                        case "font_underline":
+                            HSPGUI.Font_underline(sentence, i);
+                            break;
+                        case "font_strikeout":
+                            HSPGUI.Font_strikeout(sentence, i);
+                            break;
+                        case "screen_normal":
+                            HSPGUI.Screen_normal(sentence, i);
+                            break;
+                        case "screen_hide":
+                            HSPGUI.Screen_hide(sentence, i);
+                            break;
+                        case "screen_fixedsize":
+                            HSPGUI.Screen_fixedsize(sentence, i);
+                            break;
+                        case "screen_tool":
+                            HSPGUI.Screen_tool(sentence, i);
+                            break;
+                        case "screen_frame":
+                            HSPGUI.Screen_frame(sentence, i);
+                            break;
                     }
                 }
             }

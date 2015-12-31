@@ -35,7 +35,7 @@ namespace hsp.cs
             if (strings == string.Empty)
             {
                 return "g.DrawString(\"\", font, brush, CurrentPosX, CurrentPosY);\n" +
-                       "CurrentPosY += FontSize"; 
+                       "CurrentPosY += FontSize";
             }
             return "g.DrawString(" + strings + ".ToString(), font, brush, CurrentPosX, CurrentPosY);\n" +
                    "CurrentPosY += FontSize";
@@ -52,8 +52,8 @@ namespace hsp.cs
 
             if (strings.Equals(string.Empty))
             {
-               return "CurrentPosX = CurrentPosX" +
-                      "CurrentPosY = CurrentPosY";
+                return "CurrentPosX = CurrentPosX" +
+                       "CurrentPosY = CurrentPosY";
             }
             else if (p.Count() == 2)
             {
@@ -95,6 +95,27 @@ namespace hsp.cs
             return "program.screen(form" + p[0] + ", " + p[1] + ", " + p[2] + ")";
         }
 
+        public static string Bgscr(string strings)
+        {
+            var p = strings.Split(',');
+
+            for (var i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+
+            //Program.Window.Add();
+
+            if (!Program.AddFunction[0].Contains("public void screen"))
+            {
+                Program.AddFunction[0] += "public void screen(Form form, int width, int height)\n{\n" +
+                                          "form.ClientSize = new Size(width, height);\n}\n\n";
+            }
+
+            return "program.screen(form" + p[0] + ", " + p[1] + ", " + p[2] + ");\n" +
+                   "CurrentScreenID.FormBorderStyle = FormBorderStyle.None;";
+        }
+
         public static string Title(string strings)
         {
             if (!Program.AddFunction[0].Contains("public void Title"))
@@ -103,7 +124,7 @@ namespace hsp.cs
                                           "form.Text = strings;\n}\n\n";
 
             }
-            
+
             return "program.Title(CurrentScreenID, " + strings + ")";
         }
 
@@ -117,7 +138,7 @@ namespace hsp.cs
             }
             if (p.Count() == 1)
             {
-                switch(p[0])
+                switch (p[0])
                 {
                     case "0":
                         BufferFlag = true;
@@ -130,11 +151,67 @@ namespace hsp.cs
                         return "";
                     case "3":
                         return "";
-                    default :
+                    default:
                         return "Console.WriteLine(\"error\")";
                 }
             }
             return "Console.WriteLine(\"error\")";
+        }
+
+        public static string Mouse(string strings)
+        {
+            var p = strings.Split(',');
+
+            for (var i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+
+            if (p.Count() == 0)
+            {
+                return "Cursor.Position = new Point(CurrentPosX, CurrentPosY)";
+            }
+            else if (p.Count() == 1)
+            {
+                return "Cursor.Position = new Point(" + p[0] + ", CurrentPosY)";
+            }
+            else if (p.Count() == 2)
+            {
+                return "Cursor.Position = new Point(" + p[0] + ", " + p[1] + ")";
+            }
+            else
+            {
+                return "Console.WriteLine(\"error\")";
+            }
+        }
+
+        public static string Font(string strings)
+        {
+            var p = strings.Split(',');
+
+            for (var i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+            if (p.Count() == 1)
+            {
+                return "FontSize = 12\n" +
+                       "font = new Font(\"" + p[0] + "\", FontSize)";
+            }
+            else if (p.Count() == 2)
+            {
+                return "FontSize = " + p[1] + "\n" +
+                       "font = new Font(\"" + p[0] + "\", FontSize)";
+            }
+            else if (p.Count() == 3)
+            {
+                return "FontSize = " + p[1] + "\n" +
+                       "font = new Font(\"" + p[0] + "\", FontSize, " + p[2] + ")";
+            }
+            else
+            {
+                return "Console.WriteLine(\"error\")";
+            }
         }
 
         public static string Circle(string strings)
@@ -170,19 +247,19 @@ namespace hsp.cs
 
             if (p.Count() == 4)
             {
-                return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " + 
+                return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " +
                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
             else if (p.Count() == 5)
             {
                 if (p[4].Equals("0"))
                 {
-                    return str + "DrawEllipse(pen, " + p[0] + ", " + p[1] + ", " + 
+                    return str + "DrawEllipse(pen, " + p[0] + ", " + p[1] + ", " +
                            p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
                 }
                 else
                 {
-                    return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " + 
+                    return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " +
                            p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
                 }
             }
@@ -253,7 +330,7 @@ namespace hsp.cs
                     p[3] = "CurrentScreenID.Height";
                 }
 
-                return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " + 
+                return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
             else
@@ -330,11 +407,70 @@ namespace hsp.cs
             }
         }
 
+        public static string Picload(string strings)
+        {
+            var p = strings.Split(',');
+
+            for (var i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+
+            var str = "";
+            if (BufferFlag)
+            {
+                str = "bgr.Graphics.";
+            }
+            else
+            {
+                str = "g.";
+            }
+
+            if (!Program.AddFunction[0].Contains("public void screen"))
+            {
+                Program.AddFunction[0] += "public void screen(Form form, int width, int height)\n{\n" +
+                                          "form.ClientSize = new Size(width, height);\n}\n\n";
+            }
+
+            if (p.Count() == 1)
+            {
+                return "Image img = Image.FromFile(" + p[0] + ");\n" +
+                       "program.screen(CurrentScreenID, img.Width, img.Height);\n" +
+                       str + "DrawImage(img, 0, 0, img.Width, img.Height)";
+            }
+            else if (p.Count() == 2)
+            {
+                if (p[1] == "0") {
+                    return "Image img = Image.FromFile(" + p[0] + ");\n" +
+                           "program.screen(CurrentScreenID, img.Width, img.Height);\n" +
+                           str + "DrawImage(img, 0, 0, img.Width, img.Height)";
+                }
+                else if (p[1] == "1")
+                {
+                    return "Image img = Image.FromFile(" + p[0] + ");\n" +
+                           str + "DrawImage(img, 0, 0, img.Width, img.Height)";
+                }
+                else if (p[1] == "2")
+                {
+                    return "";////
+                }
+                else
+                {
+                    return "Console.WriteLine(\"error\")";
+                }
+            }
+            else
+            {
+                return "Console.WriteLine(\"error\")";
+            }
+        }
+
         public static string Getkey(string strings)
         {
             Program.UsingCheck("using System.Runtime.InteropServices");
 
-            if (!Program.ProgramField.Contains("[DllImport(\"user32.dll\")]\n")) {
+            if (!Program.ProgramField.Contains("[DllImport(\"user32.dll\")]\n"))
+            {
                 Program.ProgramField += "[DllImport(\"user32.dll\")]\n" +
                                         "private static extern ushort GetAsyncKeyState(int vKey);\n";
             }
@@ -405,7 +541,7 @@ namespace hsp.cs
                 return "MessageBox.Show(" + p[0] + ", \"\", " +
                        "MessageBoxButtons.OK, MessageBoxIcon.Information)";
             }
-            switch(p[1])
+            switch (p[1])
             {
                 case "0":
                     return "MessageBox.Show(" + p[0] + ", " + p[2] + ", " +
@@ -525,6 +661,66 @@ namespace hsp.cs
         public static void __time__(List<string> sentence, int i)
         {
             sentence[i] = "DateTime.Now.ToString(\"T\")";
+        }
+
+        public static void Msgothic(List<string> sentence, int i)
+        {
+            sentence[i] = "ＭＳ ゴシック";
+        }
+        public static void Msmincho(List<string> sentence, int i)
+        {
+            sentence[i] = "ＭＳ 明朝";
+        }
+
+        public static void Font_normal(List<string> sentence, int i)
+        {
+            sentence[i] = "FontStyle.Regular";
+        }
+
+        public static void Font_bold(List<string> sentence, int i)
+        {
+            sentence[i] = "FontStyle.Bold";
+        }
+
+        public static void Font_italic(List<string> sentence, int i)
+        {
+            sentence[i] = "FontStyle.Italic";
+        }
+
+        public static void Font_underline(List<string> sentence, int i)
+        {
+            sentence[i] = "FontStyle.Underline";
+        }
+
+        public static void Font_strikeout(List<string> sentence, int i)
+        {
+            sentence[i] = "FontStyle.Strikeout";
+        }
+
+        public static void Screen_normal(List<string> sentence, int i)
+        {
+            sentence[i] = "CurrentScreenID.WindowState = FormWindowState.Normal";
+        }
+
+        public static void Screen_hide(List<string> sentence, int i)
+        {
+            sentence[i] = "CurrentScreenID.WindowState = FormWindowState.Minimized;\n" +
+                          "ShowInTaskbar = false";
+        }
+
+        public static void Screen_fixedsize(List<string> sentence, int i)
+        {
+            sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.FixedSingle";
+        }
+
+        public static void Screen_tool(List<string> sentence, int i)
+        {
+            sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.FixedToolWindow";
+        }
+
+        public static void Screen_frame(List<string> sentence, int i)
+        {
+            sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.Fixed3D";
         }
     }
 }

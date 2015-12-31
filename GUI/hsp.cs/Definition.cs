@@ -89,12 +89,16 @@ namespace hsp.cs
             "wait",
             "pos",
             "screen",
+            "bgscr",
             "title",
             "redraw",
+            "mouse",
+            "font",
             "circle",
             "boxf",
             "line",
             "color",
+            "picload",
             "getkey",
             "objsize",
             "dialog"
@@ -146,7 +150,19 @@ namespace hsp.cs
             "ginfo_sel",
             "hwnd",
             "__date__",
-            "__time__"
+            "__time__",
+            "msgothic",
+            "msmincho",
+            "font_normal",
+            "font_bold",
+            "font_italic",
+            "font_underline",
+            "font_strikeout",
+            "screen_normal",
+            "screen_hide",
+            "screen_fixedsize",
+            "screen_tool",
+            "screen_frame"
         };
 
         //using
@@ -165,7 +181,9 @@ namespace hsp.cs
         //システム変数宣言
         public static string VariableDefinition = "";
         //ウィンドウを動かすためのコードの追加
-        private const string AddMainFunction = "Application.Run(form0);\n";
+        private const string AddMainFunction = "Application.EnableVisualStyles();\n" +
+                                               "//Application.SetCompatibleTextRenderingDefault(false);\n" +
+                                               "Application.Run(form0);\n";
         //Main関数とSub関数以外で必要な関数
         public static List<string> AddFunction = new List<string>()
         {
@@ -184,7 +202,7 @@ namespace hsp.cs
             "Graphics g = e.Graphics;\n" +
             "Brush brush = new SolidBrush(Color.FromArgb(0, 0, 0));\n" +
             "Pen pen = new Pen(Color.FromArgb(0, 0, 0));\n" +
-            "Font font = new Font(\"MS ゴシック\", FontSize);\n" +
+            "Font font = new Font(\"FixedSys\", FontSize);\n" +
             "try\n{\n"
         };
         //footer

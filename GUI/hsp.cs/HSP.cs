@@ -754,7 +754,7 @@ namespace hsp.cs
         
         public static void And(List<string> sentence, int i)
         {
-            sentence[i] = "&&";
+            sentence[i] = "&";
         }
 
         
@@ -766,7 +766,7 @@ namespace hsp.cs
         
         public static void Or(List<string> sentence, int i)
         {
-            sentence[i] = "||";
+            sentence[i] = "|";
         }
 
         

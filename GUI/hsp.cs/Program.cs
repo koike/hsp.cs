@@ -466,11 +466,20 @@ namespace hsp.cs
                         case "screen":
                             hspArrayData[i] = HSPGUI.Screen(commandArguments);
                             break;
+                        case "bgscr":
+                            hspArrayData[i] = HSPGUI.Bgscr(commandArguments);
+                            break;
                         case "title":
                             hspArrayData[i] = HSPGUI.Title(commandArguments);
                             break;
                         case "redraw":
                             hspArrayData[i] = HSPGUI.Redraw(commandArguments);
+                            break;
+                        case "mouse":
+                            hspArrayData[i] = HSPGUI.Mouse(commandArguments);
+                            break;
+                        case "font":
+                            hspArrayData[i] = HSPGUI.Font(commandArguments);
                             break;
                         case "circle":
                             hspArrayData[i] = HSPGUI.Circle(commandArguments);
@@ -483,6 +492,9 @@ namespace hsp.cs
                             break;
                         case "color":
                             hspArrayData[i] = HSPGUI.Color(commandArguments);
+                            break;
+                        case "picload":
+                            hspArrayData[i] = HSPGUI.Picload(commandArguments);
                             break;
                         case "getkey":
                             hspArrayData[i] = HSPGUI.Getkey(commandArguments);
@@ -575,7 +587,7 @@ namespace hsp.cs
             //C#のコードを完成
             var code = Using + ProgramHeader + ProgramField + SubFunction + "\n" + MainFunction + VariableDefinition +
                        AddMainFunction + "}\n\n" + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
-                       "\n}\ncatch(Exception)\n{\n}\n}\n\n" + ProgramFooter;
+                       "\n}\ncatch(Exception)\n{\n;\n}\n}\n\n" + ProgramFooter;
 
             //エラー判定
             var error = true;
