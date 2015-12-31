@@ -587,7 +587,7 @@ namespace hsp.cs
             //C#のコードを完成
             var code = Using + ProgramHeader + ProgramField + SubFunction + "\n" + MainFunction + VariableDefinition +
                        AddMainFunction + "}\n\n" + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
-                       "\n}\ncatch(Exception)\n{\n;\n}\n}\n\n" + ProgramFooter;
+                       "\n}\ncatch(Exception)\n{\n}\n}\n\n" + ProgramFooter;
 
             //エラー判定
             var error = true;

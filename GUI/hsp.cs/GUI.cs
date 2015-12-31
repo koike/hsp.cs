@@ -195,17 +195,17 @@ namespace hsp.cs
             }
             if (p.Count() == 1)
             {
-                return "FontSize = 12\n" +
+                return "FontSize = 12;\n" +
                        "font = new Font(\"" + p[0] + "\", FontSize)";
             }
             else if (p.Count() == 2)
             {
-                return "FontSize = " + p[1] + "\n" +
+                return "FontSize = " + p[1] + ";\n" +
                        "font = new Font(\"" + p[0] + "\", FontSize)";
             }
             else if (p.Count() == 3)
             {
-                return "FontSize = " + p[1] + "\n" +
+                return "FontSize = " + p[1] + ";\n" +
                        "font = new Font(\"" + p[0] + "\", FontSize, " + p[2] + ")";
             }
             else
