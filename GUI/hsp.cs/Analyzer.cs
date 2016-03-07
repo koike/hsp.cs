@@ -234,16 +234,10 @@ namespace hsp.cs
                             HSP.M_pi(sentence, i);
                             break;
                         case "and":
-                            HSP.And(sentence, i);
-                            break;
                         case "not":
-                            HSP.Not(sentence, i);
-                            break;
                         case "or":
-                            HSP.Or(sentence, i);
-                            break;
                         case "xor":
-                            HSP.Xor(sentence, i);
+                            HSP.BitwiseOperation(sentence, i, sentence[i]);
                             break;
                         case "mousex":
                             HSPGUI.Mousex(sentence, i);
@@ -252,25 +246,13 @@ namespace hsp.cs
                             HSPGUI.Mousey(sentence, i);
                             break;
                         case "dir_cmdline":
-                            HSP.Directory(sentence, i, "cmdline");
-                            break;
                         case "dir_cur":
-                            HSP.Directory(sentence, i, "cur");
-                            break;
                         case "dir_desktop":
-                            HSP.Directory(sentence, i, "desktop");
-                            break;
                         case "dir_exe":
-                            HSP.Directory(sentence, i, "exe");
-                            break;
                         case "dir_mydoc":
-                            HSP.Directory(sentence, i, "mydoc");
-                            break;
                         case "dir_sys":
-                            HSP.Directory(sentence, i, "sys");
-                            break;
                         case "dir_win":
-                            HSP.Directory(sentence, i, "win");
+                            HSP.Directory(sentence, i, sentence[i].Substring(4));
                             break;
                         case "ginfo_mx":
                             HSP.Ginfo_mx(sentence, i);

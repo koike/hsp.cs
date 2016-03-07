@@ -751,29 +751,26 @@ namespace hsp.cs
             sentence[i] = "Math.PI";
         }
 
-        
-        public static void And(List<string> sentence, int i)
+
+        public static void BitwiseOperation (List<string> sentence, int i, string str)
         {
-            sentence[i] = "&";
+            switch (str)
+            {
+                case "and":
+                    sentence[i] = "&";
+                    break;
+                case "not":
+                    sentence[i] = "!";
+                    break;
+                case "or":
+                    sentence[i] = "|";
+                    break;
+                case "xor":
+                    sentence[i] = "^";
+                    break;
+            }
         }
 
-        
-        public static void Not(List<string> sentence, int i)
-        {
-            sentence[i] = "!";
-        }
-
-        
-        public static void Or(List<string> sentence, int i)
-        {
-            sentence[i] = "|";
-        }
-
-        
-        public static void Xor(List<string> sentence, int i)
-        {
-            sentence[i] = "^";
-        }
 
         public static void Directory(List<string> sentence, int i, string str)
         {
