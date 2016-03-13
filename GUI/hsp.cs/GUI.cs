@@ -568,84 +568,72 @@ namespace hsp.cs
             }
         }
 
-        public static void Mousex(List<string> sentence, int i)
+        public static void Mouse(List<string> sentence, int i, string str)
         {
-            sentence[i] = "CurrentScreenID.PointToClient(Cursor.Position).X";
+            switch (str)
+            {
+                case "x":
+                    sentence[i] = "CurrentScreenID.PointToClient(Cursor.Position).X";
+                    break;
+                case "y":
+                    sentence[i] = "CurrentScreenID.PointToClient(Cursor.Position).Y";
+                    break;
+            }
         }
 
-        public static void Mousey(List<string> sentence, int i)
+        public static void Ginfo(List<string> sentence, int i, string str)
         {
-            sentence[i] = "CurrentScreenID.PointToClient(Cursor.Position).Y";
-        }
-
-        public static void Ginfo_sizeX(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.Width";
-        }
-
-        public static void Ginfo_sizeY(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.Height";
-        }
-
-        public static void Ginfo_r(List<string> sentence, int i)
-        {
-            sentence[i] = "pen.Color.R";
-        }
-
-        public static void Ginfo_g(List<string> sentence, int i)
-        {
-            sentence[i] = "pen.Color.G";
-        }
-
-        public static void Ginfo_b(List<string> sentence, int i)
-        {
-            sentence[i] = "pen.Color.B";
-        }
-
-        public static void Ginfo_cx(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentPosX";
-        }
-
-        public static void Ginfo_cy(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentPosY";
-        }
-
-        public static void Ginfo_dispx(List<string> sentence, int i)
-        {
-            sentence[i] = "Screen.PrimaryScreen.Bounds.Width";
-        }
-
-        public static void Ginfo_dispy(List<string> sentence, int i)
-        {
-            sentence[i] = "Screen.PrimaryScreen.Bounds.Height";
-        }
-
-        public static void Ginfo_wx1(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.Left";
-        }
-
-        public static void Ginfo_wx2(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.Right";
-        }
-
-        public static void Ginfo_wy1(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.Top";
-        }
-
-        public static void Ginfo_wy2(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.Bottom";
-        }
-
-        public static void Ginfo_sel(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID";
+            switch (str)
+            {
+                case "mx":
+                    sentence[i] = "Cursor.Position.X";
+                    break;
+                case "my":
+                    sentence[i] = "Cursor.Position.Y";
+                    break;
+                case "sizex":
+                    sentence[i] = "CurrentScreenID.Width";
+                    break;
+                case "sizey":
+                    sentence[i] = "CurrentScreenID.Height";
+                    break;
+                case "r":
+                    sentence[i] = "pen.Color.R";
+                    break;
+                case "g":
+                    sentence[i] = "pen.Color.G";
+                    break;
+                case "b":
+                    sentence[i] = "pen.Color.B";
+                    break;
+                case "cx":
+                    sentence[i] = "CurrentPosX";
+                    break;
+                case "cy":
+                    sentence[i] = "CurrentPosY";
+                    break;
+                case "dispx":
+                    sentence[i] = "Screen.PrimaryScreen.Bounds.Width";
+                    break;
+                case "dispy":
+                    sentence[i] = "Screen.PrimaryScreen.Bounds.Height";
+                    break;
+                case "wx1":
+                    sentence[i] = "CurrentScreenID.Left";
+                    break;
+                case "wx2":
+                    sentence[i] = "CurrentScreenID.Right";
+                    break;
+                case "wy1":
+                    sentence[i] = "CurrentScreenID.Top";
+                    break;
+                case "wy2":
+                    sentence[i] = "CurrentScreenID.Bottom";
+                    break;
+                case "sel":
+                    sentence[i] = "CurrentScreenID";
+                    break;
+            }
         }
 
         public static void Hwnd(List<string> sentence, int i)
@@ -663,64 +651,62 @@ namespace hsp.cs
             sentence[i] = "DateTime.Now.ToString(\"T\")";
         }
 
-        public static void Msgothic(List<string> sentence, int i)
+        public static void Ms(List<string> sentence, int i, string str)
         {
-            sentence[i] = "ＭＳ ゴシック";
+            switch (str)
+            {
+                case "gothic":
+                    sentence[i] = "ＭＳ ゴシック";
+                    break;
+                case "mincho":
+                    sentence[i] = "ＭＳ 明朝";
+                    break;
+            }
         }
-        public static void Msmincho(List<string> sentence, int i)
+        
+        public static void Font(List<string> sentence, int i, string str)
         {
-            sentence[i] = "ＭＳ 明朝";
-        }
-
-        public static void Font_normal(List<string> sentence, int i)
-        {
-            sentence[i] = "FontStyle.Regular";
-        }
-
-        public static void Font_bold(List<string> sentence, int i)
-        {
-            sentence[i] = "FontStyle.Bold";
-        }
-
-        public static void Font_italic(List<string> sentence, int i)
-        {
-            sentence[i] = "FontStyle.Italic";
-        }
-
-        public static void Font_underline(List<string> sentence, int i)
-        {
-            sentence[i] = "FontStyle.Underline";
-        }
-
-        public static void Font_strikeout(List<string> sentence, int i)
-        {
-            sentence[i] = "FontStyle.Strikeout";
-        }
-
-        public static void Screen_normal(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.WindowState = FormWindowState.Normal";
+            switch (str)
+            {
+                case "normal":
+                    sentence[i] = "FontStyle.Regular";
+                    break;
+                case "bold":
+                    sentence[i] = "FontStyle.Bold";
+                    break;
+                case "italic":
+                    sentence[i] = "FontStyle.Italic";
+                    break;
+                case "underline":
+                    sentence[i] = "FontStyle.Underline";
+                    break;
+                case "strikeout":
+                    sentence[i] = "FontStyle.Strikeout";
+                    break;
+            }
         }
 
-        public static void Screen_hide(List<string> sentence, int i)
+        public static void Screen(List<string> sentence, int i, string str)
         {
-            sentence[i] = "CurrentScreenID.WindowState = FormWindowState.Minimized;\n" +
-                          "ShowInTaskbar = false";
-        }
-
-        public static void Screen_fixedsize(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.FixedSingle";
-        }
-
-        public static void Screen_tool(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.FixedToolWindow";
-        }
-
-        public static void Screen_frame(List<string> sentence, int i)
-        {
-            sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.Fixed3D";
+            switch (str)
+            {
+                case "normal":
+                    sentence[i] = "CurrentScreenID.WindowState = FormWindowState.Normal";
+                    break;
+                case "hide":
+                    sentence[i] = "CurrentScreenID.WindowState = FormWindowState.Minimized;\n" +
+                                  "ShowInTaskbar = false";
+                    break;
+                case "fixedsize":
+                    sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.FixedSingle";
+                    break;
+                case "tool":
+                    sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.FixedToolWindow";
+                    break;
+                case "frame":
+                    sentence[i] = "CurrentScreenID.FormBorderStyle = FormBorderStyle.Fixed3D";
+                    break;
+            }
         }
     }
 }

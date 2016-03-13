@@ -162,6 +162,9 @@ namespace hsp.cs
                     ? hspArrayData[i].Trim()
                     : hspArrayData[i].Substring(0, spaceIndex).Trim();
 
+                //プリプロセッサ処理
+                hspArrayData[i] = Analyzer.Preprocessor(hspArrayData[i]);
+
                 //配列処理
                 hspArrayData[i] = Analyzer.ArrayVariable(hspArrayData[i]);
 

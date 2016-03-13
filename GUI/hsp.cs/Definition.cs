@@ -35,6 +35,12 @@ namespace hsp.cs
             "return"
         };
 
+        //プリプロセッサ
+        public static List<string> PreprocessorList = new List<string>()
+        {
+            "#uselib"
+        };
+
         //文字列を格納するリスト
         public static List<string> StringList = new List<string>();
 

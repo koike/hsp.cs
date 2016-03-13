@@ -62,7 +62,34 @@ namespace hsp.cs
                 }
             }
             return hspStringData;
-        } 
+        }
+
+        public static string Preprocessor(string hspArrayString)
+        {
+            //要素単位で分解するために半角スペースでスプリット
+            var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
+            for (var i = 0; i < sentence.Count; i++)
+            {
+                //余計なものは省く
+                sentence[i] = sentence[i].Trim();
+                if (sentence[i] == null ||
+                    sentence[i].Equals("\n") ||
+                    sentence[i].Equals(""))
+                    continue;
+                if (Program.PreprocessorList.Contains(sentence[i]))
+                {
+                    switch (sentence[i])
+                    {
+                        case "#uselib":
+                            HSP.Uselib(sentence, i);
+                            break;
+                    }
+                }
+            }
+            //該当しなかったらスルー
+            return string.Join(" ", sentence);
+        }
+
 
         /// <summary>
         /// 関数呼び出し
@@ -240,10 +267,8 @@ namespace hsp.cs
                             HSP.BitwiseOperation(sentence, i, sentence[i]);
                             break;
                         case "mousex":
-                            HSPGUI.Mousex(sentence, i);
-                            break;
                         case "mousey":
-                            HSPGUI.Mousey(sentence, i);
+                            HSPGUI.Mouse(sentence, i, sentence[i].Substring(5));
                             break;
                         case "dir_cmdline":
                         case "dir_cur":
@@ -255,52 +280,22 @@ namespace hsp.cs
                             HSP.Directory(sentence, i, sentence[i].Substring(4));
                             break;
                         case "ginfo_mx":
-                            HSP.Ginfo_mx(sentence, i);
-                            break;
                         case "ginfo_my":
-                            HSP.Ginfo_my(sentence, i);
-                            break;
                         case "ginfo_sizex":
-                            HSPGUI.Ginfo_sizeX(sentence, i);
-                            break;
                         case "ginfo_sizey":
-                            HSPGUI.Ginfo_sizeY(sentence, i);
-                            break;
                         case "ginfo_r":
-                            HSPGUI.Ginfo_r(sentence, i);
-                            break;
                         case "ginfo_g":
-                            HSPGUI.Ginfo_g(sentence, i);
-                            break;
                         case "ginfo_b":
-                            HSPGUI.Ginfo_b(sentence, i);
-                            break;
                         case "ginfo_cx":
-                            HSPGUI.Ginfo_cx(sentence, i);
-                            break;
                         case "ginfo_cy":
-                            HSPGUI.Ginfo_cy(sentence, i);
-                            break;
                         case "ginfo_dispx":
-                            HSPGUI.Ginfo_dispx(sentence, i);
-                            break;
                         case "ginfo_dispy":
-                            HSPGUI.Ginfo_dispy(sentence, i);
-                            break;
                         case "ginfo_wx1":
-                            HSPGUI.Ginfo_wx1(sentence, i);
-                            break;
                         case "ginfo_wx2":
-                            HSPGUI.Ginfo_wx2(sentence, i);
-                            break;
                         case "ginfo_wy1":
-                            HSPGUI.Ginfo_wy1(sentence, i);
-                            break;
                         case "ginfo_wy2":
-                            HSPGUI.Ginfo_wy2(sentence, i);
-                            break;
                         case "ginfo_sel":
-                            HSPGUI.Ginfo_sel(sentence, i);
+                            HSPGUI.Ginfo(sentence, i, sentence[i].Substring(6));
                             break;
                         case "hwnd":
                             HSPGUI.Hwnd(sentence, i);
@@ -312,40 +307,22 @@ namespace hsp.cs
                             HSPGUI.__time__(sentence, i);
                             break;
                         case "msgothic":
-                            HSPGUI.Msgothic(sentence, i);
-                            break;
                         case "msmincho":
-                            HSPGUI.Msmincho(sentence, i);
+                            HSPGUI.Ms(sentence, i, sentence[i].Substring(2));
                             break;
                         case "font_normal":
-                            HSPGUI.Font_normal(sentence, i);
-                            break;
                         case "font_bold":
-                            HSPGUI.Font_bold(sentence, i);
-                            break;
                         case "font_italic":
-                            HSPGUI.Font_italic(sentence, i);
-                            break;
                         case "font_underline":
-                            HSPGUI.Font_underline(sentence, i);
-                            break;
                         case "font_strikeout":
-                            HSPGUI.Font_strikeout(sentence, i);
+                            HSPGUI.Font(sentence, i, sentence[i].Substring(5));
                             break;
                         case "screen_normal":
-                            HSPGUI.Screen_normal(sentence, i);
-                            break;
                         case "screen_hide":
-                            HSPGUI.Screen_hide(sentence, i);
-                            break;
                         case "screen_fixedsize":
-                            HSPGUI.Screen_fixedsize(sentence, i);
-                            break;
                         case "screen_tool":
-                            HSPGUI.Screen_tool(sentence, i);
-                            break;
                         case "screen_frame":
-                            HSPGUI.Screen_frame(sentence, i);
+                            HSPGUI.Screen(sentence, i, sentence[i].Substring(7));
                             break;
                     }
                 }

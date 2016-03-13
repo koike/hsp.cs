@@ -20,6 +20,18 @@ namespace hsp.cs
             //
         }
 
+        /*========================================
+        　　　　　　プリプロセッサの定義
+        ========================================*/
+
+
+        public static void Uselib(List<string> sentence, int i)
+        {
+            Program.UsingCheck("using System.Runtime.InteropServices");
+            sentence[i] = "//" + sentence[i];
+            Program.ProgramField += "[DllImport(" + Analyzer.StringUnEscape(sentence[i + 1]) + ")]\n";
+        }
+
 
         /*========================================
         　　　　　　　　コマンドの定義
@@ -798,16 +810,6 @@ namespace hsp.cs
                     sentence[i] = "Environment.GetFolderPath(Environment.SpecialFolder.Windows)";
                     break;
             }
-        }
-
-        public static void Ginfo_mx(List<string> sentence, int i)
-        {
-            sentence[i] = "Cursor.Position.X";
-        }
-
-        public static void Ginfo_my(List<string> sentence, int i)
-        {
-            sentence[i] = "Cursor.Position.Y";
         }
     }
 }
